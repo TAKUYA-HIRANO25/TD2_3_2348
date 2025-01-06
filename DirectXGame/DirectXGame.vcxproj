@@ -110,6 +110,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MathUilityForText.cpp" />
     <ClCompile Include="myMath.cpp" />
+    <ClCompile Include="Time.cpp" />
     <ClCompile Include="WorldTransformEx.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -191,6 +192,7 @@
     <ClInclude Include="GameScene.h" />
     <ClInclude Include="MathUilityForText.h" />
     <ClInclude Include="myMath.h" />
+    <ClInclude Include="Time.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

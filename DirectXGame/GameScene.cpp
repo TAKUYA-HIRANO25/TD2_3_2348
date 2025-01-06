@@ -15,11 +15,12 @@ void GameScene::Initialize() {
 	input_ = Input::GetInstance();
 	audio_ = Audio::GetInstance();
 
-	
+	time_ = new Time();
+	time_->Initialize();
 }
 
 void GameScene::Update() {
-
+	time_->Update();
 
 }
 

@@ -1,7 +1,7 @@
 #pragma once
 
 #include <KamataEngine.h>
-
+#include "Time.h"
 
 /// <summary>
 /// ゲームシーン
@@ -42,7 +42,7 @@ private: // メンバ変数
 	KamataEngine::Input* input_ = nullptr;
 	KamataEngine::Audio* audio_ = nullptr;
 	
-
+	Time* time_ = nullptr;
 
 	/// <summary>
 	/// ゲームシーン用
