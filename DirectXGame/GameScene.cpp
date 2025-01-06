@@ -17,11 +17,38 @@ void GameScene::Initialize() {
 
 	time_ = new Time();
 	time_->Initialize();
+
+	// ゲームプレイフェーズから開始
+	phase_ = Phase::kPlay;
+
+	// フェードの作成
+	fade = new Fade();
+	fade->Initialize();
+	fade->Start(Fade::Status::FadeIn, 1.0f);
+
 }
 
 void GameScene::Update() {
-	time_->Update();
+	ChangePhase();
 
+	switch (phase_) {
+	case GameScene::Phase::kPlay:
+		time_->Update();
+	case GameScene::Phase::kMain:
+
+		fade->Update();
+		break;
+	case GameScene::Phase::kDeath:
+
+
+		break;
+	case GameScene::Phase::kClear:
+
+
+		break;
+	default:
+		break;
+	}
 }
 
 void GameScene::Draw() {
@@ -67,5 +94,49 @@ void GameScene::Draw() {
 	Sprite::PostDraw();
 
 #pragma endregion
+}
+
+void GameScene::ChangePhase()
+{
+	switch (phase_) {
+	case GameScene::Phase::kPlay:
+		if (input_->TriggerKey(DIK_SPACE)) {
+			phase_ = Phase::kClear;
+		}
+		break;
+
+	case GameScene::Phase::kFadeIn:
+
+		fade->Start(Fade::Status::FadeOut, 1.0f);
+		phase_ = Phase::kMain;
+
+		break;
+
+	case GameScene::Phase::kMain:
+		if (fade->IsFinished()) {
+			phase_ = Phase::kFadeOut;
+		}
+
+		break;
+
+	case GameScene::Phase::kFadeOut:
+		finished_ = true;
+
+		break;
+	case GameScene::Phase::kDeath:
+		if (input_->TriggerKey(DIK_SPACE)) {
+			phase_ = Phase::kFadeIn;
+		}
+		break;
+
+	case GameScene::Phase::kClear:
+		if (input_->TriggerKey(DIK_SPACE)) {
+			phase_ = Phase::kFadeIn;
+		}
+
+		break;
+	default:
+		break;
+	}
 }
 
