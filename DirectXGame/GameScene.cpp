@@ -48,14 +48,17 @@ void GameScene::Update() {
 
 	switch (phase_) {
 	case GameScene::Phase::kPlay:
+		
 		time_->Update();
-
+		
+		mainTower_->Update();
 		
 		break;
 
 	case GameScene::Phase::kMain:
-		mainTower_->Update();
+		
 		fade->Update();
+		
 		break;
 
 	case GameScene::Phase::kDeath:

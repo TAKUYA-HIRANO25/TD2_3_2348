@@ -18,6 +18,19 @@ public:
 	// 更新
 	void Update();	
 
+	// 攻撃
+	void Attack();
+
+	// 衝突判定
+	void OnCollision();
+
+	// 攻撃フェーズの初期化
+	void AttackInitialize();
+
+	// 各フェーズの更新処理
+	void AttackUpdate();
+	void ElminateUpdate();
+
 	// 描画
 	void Draw();
 
@@ -31,7 +44,7 @@ public:
 	};
 
 	// 攻撃間隔
-	static const int kFireInterval = 60;
+	static const int kAttackInterval = 60;
 
 private:
 
@@ -47,8 +60,16 @@ private:
 	// カメラ
 	KamataEngine::Camera* camera_ = nullptr;
 
-	
+	// 
+	Phase phase_ = Phase::Initial;
 
+	// hp
+	int hp_ = 1000;
+
+	// 
+	int32_t attackTimer = 0;
+
+	// 
 
 };
 
