@@ -109,6 +109,7 @@
     <ClCompile Include="Fade.cpp" />
     <ClCompile Include="GameScene.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="MainTower.cpp" />
     <ClCompile Include="MathUilityForText.cpp" />
     <ClCompile Include="myMath.cpp" />
     <ClCompile Include="Time.cpp" />
@@ -193,6 +194,7 @@
   <ItemGroup>
     <ClInclude Include="Fade.h" />
     <ClInclude Include="GameScene.h" />
+    <ClInclude Include="MainTower.h" />
     <ClInclude Include="MathUilityForText.h" />
     <ClInclude Include="myMath.h" />
     <ClInclude Include="Time.h" />

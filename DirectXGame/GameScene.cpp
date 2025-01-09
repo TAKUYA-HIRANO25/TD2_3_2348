@@ -26,6 +26,12 @@ void GameScene::Initialize() {
 	fade->Initialize();
 	fade->Start(Fade::Status::FadeIn, 1.0f);
 
+	// 
+	mainTower_ = new MainTower();
+	mainTowerTextureHandle_ = TextureManager::Load("mainTower.jpg");
+	mainTower_->Initialize(model_, mainTowerTextureHandle_, &camera_);
+
+
 }
 
 void GameScene::Update() {
@@ -34,14 +40,20 @@ void GameScene::Update() {
 	switch (phase_) {
 	case GameScene::Phase::kPlay:
 		time_->Update();
+
+		mainTower_->Update();
+		break;
+
 	case GameScene::Phase::kMain:
 
 		fade->Update();
 		break;
+
 	case GameScene::Phase::kDeath:
 
 
 		break;
+
 	case GameScene::Phase::kClear:
 
 
@@ -77,6 +89,8 @@ void GameScene::Draw() {
 	/// <summary>
 	/// ここに3Dオブジェクトの描画処理を追加できる
 	/// </summary>
+
+	mainTower_->Draw();
 
 	// 3Dオブジェクト描画後処理
 	Model::PostDraw();
