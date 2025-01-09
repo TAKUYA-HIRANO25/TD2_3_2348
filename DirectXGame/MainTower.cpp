@@ -17,9 +17,6 @@ void MainTower::Initialize(KamataEngine::Model* model, uint32_t textureHandle, K
 	camera_ = camera;
 
 	worldTransform_.Initialize();
-	worldTransform_.scale_ = { 1,1,2.5f };
-
-
 }
 
 
