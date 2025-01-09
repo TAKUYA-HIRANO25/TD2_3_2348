@@ -78,6 +78,11 @@ void GameScene::Draw() {
 	/// ここに3Dオブジェクトの描画処理を追加できる
 	/// </summary>
 
+	// 敵の描画
+	for (Enemy* enemy : enemys_) {
+		enemy->Draw(camera_);
+	}
+
 	// 3Dオブジェクト描画後処理
 	Model::PostDraw();
 #pragma endregion
