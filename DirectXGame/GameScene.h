@@ -3,6 +3,7 @@
 #include <KamataEngine.h>
 #include "Time.h"
 #include "Fade.h"
+#include "Tower.h"
 
 /// <summary>
 /// ゲームシーン
@@ -44,13 +45,17 @@ private: // メンバ変数
 	KamataEngine::DirectXCommon* dxCommon_ = nullptr;
 	KamataEngine::Input* input_ = nullptr;
 	KamataEngine::Audio* audio_ = nullptr;
-	
+	KamataEngine::Model* towerModel_ = nullptr;
+	KamataEngine::Camera* camera_ = nullptr;
 
 	//時間
 	Time* time_ = nullptr;
 
 	//フェード
 	Fade* fade = nullptr;
+
+	//タワー
+	Tower* tower_ = nullptr;
 
 	// 終了フラグ
 	bool finished_ = false;

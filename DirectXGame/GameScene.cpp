@@ -15,6 +15,17 @@ void GameScene::Initialize() {
 	input_ = Input::GetInstance();
 	audio_ = Audio::GetInstance();
 
+	camera_ = new Camera;
+	camera_->Initialize();
+
+	//モデル
+	towerModel_ = Model::CreateFromOBJ("cube", true);
+
+	//タワー
+	tower_ = new Tower;
+	tower_->Initialize(towerModel_,camera_);
+
+	//時間
 	time_ = new Time();
 	time_->Initialize();
 
@@ -34,6 +45,13 @@ void GameScene::Update() {
 	switch (phase_) {
 	case GameScene::Phase::kPlay:
 		time_->Update();
+		if (input_->IsTriggerMouse(0)) {
+			tower_->IsExistence(true);
+		}
+
+		tower_->Update();
+
+
 	case GameScene::Phase::kMain:
 
 		fade->Update();
@@ -77,6 +95,8 @@ void GameScene::Draw() {
 	/// <summary>
 	/// ここに3Dオブジェクトの描画処理を追加できる
 	/// </summary>
+
+	tower_->Draw();
 
 	// 3Dオブジェクト描画後処理
 	Model::PostDraw();
