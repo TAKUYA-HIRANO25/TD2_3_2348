@@ -15,6 +15,15 @@ void GameScene::Initialize() {
 	input_ = Input::GetInstance();
 	audio_ = Audio::GetInstance();
 
+	// 3Dモデルの生成
+	model_ = Model::Create();
+
+	// ワールドトランスフォームの初期化
+	worldTransform_.Initialize();
+
+	// カメラの初期化
+	camera_.Initialize();
+
 	time_ = new Time();
 	time_->Initialize();
 
@@ -26,7 +35,7 @@ void GameScene::Initialize() {
 	fade->Initialize();
 	fade->Start(Fade::Status::FadeIn, 1.0f);
 
-	// 
+	// メインタワー
 	mainTower_ = new MainTower();
 	mainTowerTextureHandle_ = TextureManager::Load("mainTower.jpg");
 	mainTower_->Initialize(model_, mainTowerTextureHandle_, &camera_);
@@ -41,11 +50,11 @@ void GameScene::Update() {
 	case GameScene::Phase::kPlay:
 		time_->Update();
 
-		mainTower_->Update();
+		
 		break;
 
 	case GameScene::Phase::kMain:
-
+		mainTower_->Update();
 		fade->Update();
 		break;
 
