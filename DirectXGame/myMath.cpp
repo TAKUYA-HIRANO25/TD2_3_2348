@@ -32,6 +32,12 @@ Matrix4x4 MakeAffineMatrix(const Vector3& scale, const Vector3& rot, const Vecto
 
 	return returnMat;
 }
+//スクリーンからワールド
+KamataEngine::Matrix4x4 MakeWorldMatrix(const KamataEngine::Matrix4x4& mat)
+{
+	
+
+}
 
 // 行列の掛け算
 Matrix4x4 MatrixMultiply(Matrix4x4& m1, Matrix4x4& m2) {
@@ -316,7 +322,7 @@ Vector3 myMath::Transform(const Vector3& vector, const Matrix4x4& matrix) {
 	result.z = matrix.m[0][2] * vector.x + matrix.m[1][2] * vector.y + matrix.m[2][2] * vector.z + matrix.m[3][2];
 	float w = matrix.m[0][3] * vector.x + matrix.m[1][3] * vector.y + matrix.m[2][3] * vector.z + matrix.m[3][3];
 	if (w != 0.0f)
-		result.x /= w;
+	result.x /= w;
 	result.y /= w;
 	result.z /= w;
 	return result;

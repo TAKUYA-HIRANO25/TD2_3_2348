@@ -21,6 +21,8 @@ void Tower::Initialize(Model* model, Camera* camera)
 	input_ = Input::GetInstance();
 
 	worldTransform_.Initialize();
+	worldTransform3DReticle_.Initialize();
+
 }
 
 void Tower::Update()
@@ -28,10 +30,9 @@ void Tower::Update()
 	mousePosition = input_->GetMousePosition();
 
 	if (existenceFlag == true) {
-		worldTransform_.translation_.x = mousePosition.x;
-		worldTransform_.translation_.y = mousePosition.y;
-
+		WorldConversion();
 	}
+
 	worldTransform_.UpdateMatrix();
 }
 
@@ -45,4 +46,27 @@ void Tower::Draw()
 void Tower::IsExistence(bool existence)
 {
 	existenceFlag = existence;
+}
+
+void Tower::WorldConversion()
+{
+	POINT mousePosition;
+
+	GetCursorPos(&mousePosition);
+
+	HWND hwnd = WinApp::GetInstance()->GetHwnd();
+	ScreenToClient(hwnd, &mousePosition);
+
+	Matrix4x4 matVPV = ;
+
+}
+
+void Tower::SceneConversion()
+{
+	//自機から3Dレティクルへの距離
+	const float kDistancePlayerTo#DReticle = 50.0f;
+	//自機から3Dレティクルへのオフセット(Z+向き)
+	Vector3 offset = { 0,0,1.0f };
+
+
 }

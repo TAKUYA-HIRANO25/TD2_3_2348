@@ -5,6 +5,8 @@
 #include <input/Input.h>
 #include <math/Vector3.h>
 #include "myMath.h"
+#include <base/WinApp.h>
+
 class Tower
 {
 public:
@@ -27,8 +29,14 @@ public:
 
 	void IsExistence(bool existence);
 
+	void WorldConversion();
+
+	void SceneConversion();
+
 private:
 	KamataEngine::WorldTransform worldTransform_;
+
+	KamataEngine::WorldTransform worldTransform3DReticle_;
 
 	KamataEngine::Model* model_ = nullptr;
 
