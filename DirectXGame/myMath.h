@@ -3,8 +3,6 @@
 #include <cmath>
 // アフィン変換行列の作成
 KamataEngine::Matrix4x4 MakeAffineMatrix(const KamataEngine::Vector3& scale, const KamataEngine::Vector3& rot, const KamataEngine::Vector3& translate);
-//スクリーンからワールド
-KamataEngine::Matrix4x4 MakeWorldMatrix(const KamataEngine::Matrix4x4& mat);
 // 行列の掛け算
 KamataEngine::Matrix4x4 MatrixMultiply(KamataEngine::Matrix4x4& m1, KamataEngine::Matrix4x4& m2);
 

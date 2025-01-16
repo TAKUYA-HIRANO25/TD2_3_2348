@@ -47,6 +47,7 @@ void GameScene::Update() {
 		time_->Update();
 		if (input_->IsTriggerMouse(0)) {
 			tower_->IsExistence(true);
+			tower_->IsTower(false);
 		}
 
 		tower_->Update();

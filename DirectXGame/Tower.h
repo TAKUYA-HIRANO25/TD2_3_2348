@@ -4,8 +4,13 @@
 #include <audio/Audio.h>
 #include <input/Input.h>
 #include <math/Vector3.h>
+#include <3d/Camera.h>
 #include "myMath.h"
 #include <base/WinApp.h>
+#include "MathUilityForText.h"
+#include <2d/Sprite.h>
+#include <base/TextureManager.h>
+#include <2d/ImGuiManager.h>
 
 class Tower
 {
@@ -29,13 +34,13 @@ public:
 
 	void IsExistence(bool existence);
 
-	void WorldConversion();
+	void IsTower(bool flag);
 
-	void SceneConversion();
+	void WorldConversion();
 
 private:
 	KamataEngine::WorldTransform worldTransform_;
-
+	//3Dレティクル用ワールドトランスフォーム
 	KamataEngine::WorldTransform worldTransform3DReticle_;
 
 	KamataEngine::Model* model_ = nullptr;
@@ -46,8 +51,7 @@ private:
 
 	KamataEngine::Input* input_ = nullptr;
 
-	KamataEngine::Vector2 mousePosition;
-
 	bool existenceFlag = false;
 
+	bool towerFlag = false;
 };
