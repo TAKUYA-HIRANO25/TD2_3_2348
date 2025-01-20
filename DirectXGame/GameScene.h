@@ -3,7 +3,6 @@
 #include <KamataEngine.h>
 #include "Time.h"
 #include "Fade.h"
-#include "Enemy.h"
 
 #include "MainTower.h"
 
@@ -42,19 +41,6 @@ public: // メンバ関数
 
 	void ChangePhase();
 
-	void EnemyPop(KamataEngine::Vector3 positon);
-
-	/// 敵発生データの読み込み
-	void LoadEnemyPopData();
-
-	// 敵発生コマンドの更新
-	void UpdateEnemyPopCommands();
-
-	const KamataEngine::Vector3 screenCenter = { 0.0f, 0.0f, 0.0f }; // 屏幕中心坐标
-
-	// 衝突判定と応答
-	void CheckAllCollisions();
-
 private: // メンバ変数
 
 	KamataEngine::DirectXCommon* dxCommon_ = nullptr;
@@ -74,8 +60,6 @@ private: // メンバ変数
 	MainTower* mainTower_ = nullptr;
 	uint32_t mainTowerTextureHandle_ = 0;
 
-	uint32_t EnemytextureHandle_ = 0;
-	
 	//時間
 	Time* time_ = nullptr;
 
@@ -96,27 +80,7 @@ private: // メンバ変数
 	};
 	// ゲームの現在のフェーズ
 	Phase phase_;
-
-	// 敌人
-	Enemy* enemy_ = nullptr;
-	std::list<Enemy*> enemys_;
-	// 敵の座標
-	KamataEngine::Vector3 Position = { 2.0f, 0.0f, 60.0f };
-	// 敵の速度
-	KamataEngine::Vector3 Velocity_ = { 0, 0, -0.1f };
-	// 敵の離脱時速度
-	KamataEngine::Vector3 LeaveVelo_ = { -1.0f, 1.0f, 0.0f };
-	// 敵の半径
-	float Enemyradius_ = 1.0f;
-
-	// 敵発生コマンド
-	std::stringstream enemyPopCommands;
-	// 待機中フラグ
-	bool waitFlag = false;
-	// 待機タイマー
-	int32_t waitTimer = 0;
 	/// <summary>
 	/// ゲームシーン用
 	/// </summary>
-	
 };

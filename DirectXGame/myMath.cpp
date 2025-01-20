@@ -217,19 +217,3 @@ KamataEngine::Vector3 myMath::Normalize(const KamataEngine::Vector3& v)
 	assert(length != 0.0f);
 	return { v.x / length, v.y / length, v.z / length };
 }
-
-KamataEngine::Vector3 myMath::Add(const KamataEngine::Vector3& vec1, const KamataEngine::Vector3& vec2)
-{
-	return KamataEngine::Vector3(vec1.x + vec2.x, vec1.y + vec2.y, vec1.z + vec2.z);
-}
-
-// 減算
-KamataEngine::Vector3 myMath::Subtract(const KamataEngine::Vector3& v1, const KamataEngine::Vector3& v2) { return { v1.x - v2.x, v1.y - v2.y, v1.z - v2.z }; }
-
-KamataEngine::Vector3 myMath::Multiply(float scalar, const KamataEngine::Vector3& vector) {
-	return { scalar * vector.x, scalar * vector.y, scalar * vector.z };
-}
-
-float myMath::Length(const KamataEngine::Vector3& v) {
-	return std::sqrt(Dot(v, v));
-}

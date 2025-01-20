@@ -4,14 +4,6 @@
 #include <3d/Camera.h>
 #include <3d/Model.h>
 #include <base/TextureManager.h>
-#include <math/Vector3.h>
-
-#include "MainTowerBullet.h"
-
-using namespace KamataEngine;
-
-// Enemyクラスの前方宣言
-class Enemy;
 
 class MainTower
 {
@@ -26,9 +18,6 @@ public:
 	// 更新
 	void Update();	
 
-	// 描画
-	void Draw();
-
 	// 攻撃
 	void Attack();
 
@@ -41,32 +30,21 @@ public:
 	// 各フェーズの更新処理
 	void AttackUpdate();
 	void ElminateUpdate();
-		
-	// 
-	void SetEnemy(Enemy* enemy) { enemy_ = enemy; }
+
+	// 描画
+	void Draw();
 
 public:
 
 	// 行動フェイズ
 	enum class Phase {
 		Initial,    // 初期位置
-		Attack,     // 攻撃する
-		Eleminate,  // 崩壊する
+		Attack,     // 接近する
+		Eleminate,  // 離脱する
 	};
 
 	// 攻撃間隔
-	static const int kAttackInterval = 30;
-
-	// デスフラグのGetter
-	bool IsDead() const { return isDead_; }
-
-	// ワールド座標
-	Vector3 GetWorldPosition();
-
-	// 弾リストを取得
-	const std::list<MainTowerBullet*>& Getbullets()const { return bullets_; }
-
-	
+	static const int kAttackInterval = 60;
 
 private:
 
@@ -82,24 +60,16 @@ private:
 	// カメラ
 	KamataEngine::Camera* camera_ = nullptr;
 
-	// フェーズ管理
+	// 
 	Phase phase_ = Phase::Initial;
 
 	// hp
-	float hp_ = 100;
+	int hp_ = 1000;
 
-	// 攻撃タイマー
+	// 
 	int32_t attackTimer = 0;
 
-	// 弾
-	MainTowerBullet* bullet_ = nullptr;
-	std::list<MainTowerBullet*>bullets_;
+	// 
 
-	// デスフラグ
-	bool isDead_ = false;
-
-	// enemy
-	Enemy* enemy_ = nullptr;
-	std::list<Enemy*>enemys_;
 };
 

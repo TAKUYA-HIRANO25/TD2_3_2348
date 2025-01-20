@@ -67,7 +67,7 @@
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
-      <TreatWarningAsError>false</TreatWarningAsError>
+      <TreatWarningAsError>true</TreatWarningAsError>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -92,7 +92,7 @@
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
-      <TreatWarningAsError>false</TreatWarningAsError>
+      <TreatWarningAsError>true</TreatWarningAsError>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -106,12 +106,10 @@
     </FxCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="Fade.cpp" />
     <ClCompile Include="GameScene.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MainTower.cpp" />
-    <ClCompile Include="MainTowerBullet.cpp" />
     <ClCompile Include="MathUilityForText.cpp" />
     <ClCompile Include="myMath.cpp" />
     <ClCompile Include="Time.cpp" />
@@ -194,11 +192,9 @@
     <None Include="Resources\shaders\Sprite.hlsli" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Enemy.h" />
     <ClInclude Include="Fade.h" />
     <ClInclude Include="GameScene.h" />
     <ClInclude Include="MainTower.h" />
-    <ClInclude Include="MainTowerBullet.h" />
     <ClInclude Include="MathUilityForText.h" />
     <ClInclude Include="myMath.h" />
     <ClInclude Include="Time.h" />
