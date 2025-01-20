@@ -1,12 +1,17 @@
 #include "GameScene.h"
 #include <cassert>
-
+#include "math/Vector3.h"
+#include <fstream>
+#include <iostream>
 using namespace KamataEngine;
 
 GameScene::GameScene() {}
 
 GameScene::~GameScene() {
-	
+	// 敵の解放
+	for (Enemy* enemy : enemys_) {
+		delete enemy;
+	}
 }
 
 void GameScene::Initialize() {
@@ -29,11 +34,17 @@ void GameScene::Initialize() {
 
 	// ゲームプレイフェーズから開始
 	phase_ = Phase::kPlay;
-
+	// 3Dモデルの生成
+	model_ = KamataEngine::Model::Create();
+	// ビュープロジェクションの初期化
+	camera_.Initialize();
 	// フェードの作成
 	fade = new Fade();
 	fade->Initialize();
 	fade->Start(Fade::Status::FadeIn, 1.0f);
+
+	LoadEnemyPopData();
+
 
 	// メインタワー
 	mainTower_ = new MainTower();
@@ -48,8 +59,13 @@ void GameScene::Update() {
 
 	switch (phase_) {
 	case GameScene::Phase::kPlay:
+		UpdateEnemyPopCommands();
 		
 		time_->Update();
+		// 敵の更新
+		for (Enemy* enemy : enemys_) {
+			enemy->Update();
+		}
 		
 		mainTower_->Update();
 		
@@ -58,6 +74,7 @@ void GameScene::Update() {
 	case GameScene::Phase::kMain:
 		
 		fade->Update();
+	
 		
 		break;
 
@@ -73,6 +90,8 @@ void GameScene::Update() {
 	default:
 		break;
 	}
+
+
 }
 
 void GameScene::Draw() {
@@ -101,6 +120,11 @@ void GameScene::Draw() {
 	/// <summary>
 	/// ここに3Dオブジェクトの描画処理を追加できる
 	/// </summary>
+
+	// 敵の描画
+	for (Enemy* enemy : enemys_) {
+		enemy->Draw(camera_);
+	}
 
 	mainTower_->Draw();
 
@@ -166,3 +190,87 @@ void GameScene::ChangePhase()
 	}
 }
 
+
+
+void GameScene::EnemyPop(KamataEngine::Vector3 position) {
+	
+
+	KamataEngine::Vector3 spawnPosition;
+
+	
+
+	// 敵の生成
+	Enemy* newEnemy = new Enemy();
+	// 敵キャラに自キャラのアドレスを渡す
+	//newEnemy->SetPlayer(player_);
+	// 敵キャラにゲームシーンを渡す
+	newEnemy->SetGameScene(this);
+	// 敵の初期化
+	newEnemy->Initialize(model_, position);
+	enemys_.push_back(newEnemy);
+}
+
+void GameScene::LoadEnemyPopData() {
+	// ファイルを開く
+	std::ifstream file;
+	file.open("Resources./enemyPop.csv");
+	assert(file.is_open());
+	// ファイルの内容を文字列ストリームにコピー
+	enemyPopCommands << file.rdbuf();
+	// ファイルを閉じる
+	file.close();
+
+
+}
+
+void GameScene::UpdateEnemyPopCommands() {
+	// 待機処理
+	if (waitFlag) {
+		waitTimer--;
+		if (waitTimer <= 0) {
+			// 待機完了
+			waitFlag = false;
+		}
+		return;
+	}
+	// 1行分の文字列を入れる変数
+	std::string line;
+	// コマンド実行ループ
+	while (std::getline(enemyPopCommands, line)) {
+		// 1行分の文字列をストリームに変換して解析しやすくする
+		std::istringstream line_stream(line);
+		std::string word;
+		//,区切りで行の先頭文字列を取得
+		std::getline(line_stream, word, ',');
+		//"//"から始まる行はコメント
+		if (word.find("//") == 0) {
+			// コメント行を飛ばす
+			continue;
+		}
+		// POPコマンド
+		if (word.find("POP") == 0) {
+			// x座標
+			std::getline(line_stream, word, ',');
+			float x = (float)std::atof(word.c_str());
+			// y座標
+			std::getline(line_stream, word, ',');
+			float y = (float)std::atof(word.c_str());
+			// z座標
+			std::getline(line_stream, word, ',');
+			float z = (float)std::atof(word.c_str());
+			// 敵を発生させる
+			EnemyPop(KamataEngine::Vector3(x, y, z));
+		}
+		// WAITコマンド
+		else if (word.find("WAIT") == 0) {
+			std::getline(line_stream, word, ',');
+			// 待ち時間
+			int32_t waitTime = atoi(word.c_str());
+			// 待機時間
+			waitFlag = true;
+			waitTimer = waitTime;
+			// コマンドループを抜ける
+			break;
+		}
+	}
+}
