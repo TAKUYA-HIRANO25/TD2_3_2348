@@ -11,6 +11,7 @@
 #include <2d/Sprite.h>
 #include <base/TextureManager.h>
 #include <2d/ImGuiManager.h>
+#include <math.h>
 
 class Tower
 {
@@ -38,6 +39,12 @@ public:
 
 	void WorldConversion();
 
+	//線と面の当たり判定
+	bool IsCollision(const KamataEngine::Vector3 origin, KamataEngine::Vector3 diff, 
+		KamataEngine::Vector3 normal, const float distance);
+
+	KamataEngine::Vector3 GetWorldPosition(KamataEngine::WorldTransform worldPos);
+
 private:
 	KamataEngine::WorldTransform worldTransform_;
 	//3Dレティクル用ワールドトランスフォーム
@@ -54,4 +61,14 @@ private:
 	bool existenceFlag = false;
 
 	bool towerFlag = false;
+
+	float rotation = 0.0f;
+
+	float rotationDos = 0.0f;
+
+	float ez = 0.0f;
+
+	KamataEngine::Vector3 normalizeRc;
+
+	KamataEngine::Vector3 nomalizeSe;
 };

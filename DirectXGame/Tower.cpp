@@ -105,12 +105,71 @@ void Tower::WorldConversion()
 		//カメラから照準オブジェクトの距離
 		const float kDistanceTestObject = 100.0f;
 		worldTransform3DReticle_.translation_ = posNear + mouseDirection * kDistanceTestObject;
-		worldTransform3DReticle_.translation_.z = 1.0f;
+		worldTransform3DReticle_.UpdateMatrix();
+		float ey = (worldTransform3DReticle_.translation_.y - camera_->translation_.y) * (worldTransform3DReticle_.translation_.y - camera_->translation_.y) 
+			+ (worldTransform3DReticle_.translation_.x - camera_->translation_.x) * (worldTransform3DReticle_.translation_.x - camera_->translation_.x);
+		ey = sqrt(ey);
+		float ex = worldTransform3DReticle_.translation_.z - camera_->translation_.z;
+		rotation = std::atan2(ey,ex);
+		rotationDos = rotation * 180.0f / 3.14159f;
+		//斜辺を求める
+		ez = -camera_->translation_.z / std::cos(rotation);
+
+
+
+		float es =  (worldTransform3DReticle_.translation_.x - camera_->translation_.x) * (worldTransform3DReticle_.translation_.x - camera_->translation_.x) +
+		(worldTransform3DReticle_.translation_.y - camera_->translation_.y) * (worldTransform3DReticle_.translation_.y - camera_->translation_.y) +
+			(worldTransform3DReticle_.translation_.z - camera_->translation_.z) * (worldTransform3DReticle_.translation_.z - camera_->translation_.z);
+
+		es = sqrt(es);
+
+		normalizeRc = (worldTransform3DReticle_.translation_ - camera_->translation_) / es;
+
+		nomalizeSe = normalizeRc * ez;
+
+		nomalizeSe.z += camera_->translation_.z;
+		worldTransform3DReticle_.translation_ = nomalizeSe;
 		worldTransform3DReticle_.UpdateMatrix();
 	}
+
+
+
 	ImGui::Begin("Tower");
 	ImGui::Text("3DReticale:(%+2f,%+2f,%+2f)", worldTransform3DReticle_.translation_.x,
 		worldTransform3DReticle_.translation_.y, worldTransform3DReticle_.translation_.z);
+	ImGui::Text("Camera:(%+2f,%+2f,%+2f", camera_->translation_.x, camera_->translation_.y, camera_->translation_.z);;
+	ImGui::Text("rote:%+2f", rotationDos);
+	ImGui::Text("ez:%+2f", ez);
+	ImGui::Text("nomalizeSe:(%+2f,%+2f,%+2f", nomalizeSe.x,nomalizeSe.y,nomalizeSe.z);
 	ImGui::End();
 	towerFlag = true;
+}
+
+bool Tower::IsCollision(const KamataEngine::Vector3 origin, KamataEngine::Vector3 diff,KamataEngine::Vector3 normal, const float distance)
+{
+	// 平面の法線ベクトルと平面までの距離を取得
+	Vector3 normal_ = normal;
+	float distance_ = distance;
+
+	// 線分の始点と終点の位置を計算
+	float startDistance = normal_.x * origin.x + normal_.y * origin.y + normal_.z * origin.z - distance_;
+	float endDistance = normal_.x * (origin.x + diff.x) + normal_.y * (origin.y + diff.y) + normal_.z * (origin.z + diff.z) - distance_;
+
+	// 線分が平面の両側にあるかどうかを判定
+	if ((startDistance * endDistance) <= 0.0f) {
+		// 両側にある場合は交差が発生するため、衝突と判定
+		return true;
+	}
+
+	// 両側にない場合は衝突しない
+	return false;
+}
+
+KamataEngine::Vector3 Tower::GetWorldPosition(WorldTransform worldPos_)
+{
+	Vector3 worldPos;
+	worldPos.x = worldPos_.matWorld_.m[3][0];
+	worldPos.y = worldPos_.matWorld_.m[3][1];
+	worldPos.z = worldPos_.matWorld_.m[3][2];
+	return worldPos;
 }

@@ -1,6 +1,28 @@
 #include <math/Matrix4x4.h>
 #include <math/Vector3.h>
 #include <cmath>
+struct Line {
+	KamataEngine::Vector3 origin;
+	KamataEngine::Vector3 diff;
+};
+
+struct Ray
+{
+	KamataEngine::Vector3 origin;
+	KamataEngine::Vector3 diff;
+};
+
+struct Segment
+{
+	KamataEngine::Vector3 origin;
+	KamataEngine::Vector3 diff;
+};
+
+struct  Plane {
+	KamataEngine::Vector3 normal;
+	float distance;
+};
+
 // アフィン変換行列の作成
 KamataEngine::Matrix4x4 MakeAffineMatrix(const KamataEngine::Vector3& scale, const KamataEngine::Vector3& rot, const KamataEngine::Vector3& translate);
 // 行列の掛け算
@@ -24,6 +46,5 @@ public:
 	static KamataEngine::Matrix4x4 Inverse(const KamataEngine::Matrix4x4& m);
 	static KamataEngine::Vector3 Transform(const KamataEngine::Vector3& vector, const KamataEngine::Matrix4x4& matrix);
 	static KamataEngine::Vector3 TransformNormal(const KamataEngine::Vector3& vector, const KamataEngine::Matrix4x4& matrix);
-	static KamataEngine::Vector3 Normalize(const KamataEngine::Vector3& v); 
-
+	static KamataEngine::Vector3 Normalize(const KamataEngine::Vector3& v);
 };
