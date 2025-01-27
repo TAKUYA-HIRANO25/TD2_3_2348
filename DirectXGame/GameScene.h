@@ -3,7 +3,7 @@
 #include <KamataEngine.h>
 #include "Time.h"
 #include "Fade.h"
-#include "Tower.h"
+#include "SetTower.h"
 
 /// <summary>
 /// ゲームシーン
@@ -55,7 +55,7 @@ private: // メンバ変数
 	Fade* fade = nullptr;
 
 	//タワー
-	Tower* tower_ = nullptr;
+	SetTower* tower_ = nullptr;
 
 	// 終了フラグ
 	bool finished_ = false;

@@ -22,7 +22,7 @@ void GameScene::Initialize() {
 	towerModel_ = Model::CreateFromOBJ("cube", true);
 
 	//タワー
-	tower_ = new Tower;
+	tower_ = new SetTower;
 	tower_->Initialize(towerModel_,camera_);
 
 	//時間

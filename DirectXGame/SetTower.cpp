@@ -1,17 +1,17 @@
-#include "Tower.h"
+#include "SetTower.h"
 
 using namespace KamataEngine;
 
-Tower::Tower()
+SetTower::SetTower()
 {
 }
 
-Tower::~Tower()
+SetTower::~SetTower()
 {
 
 }
 
-void Tower::Initialize(Model* model, Camera* camera)
+void SetTower::Initialize(Model* model, Camera* camera)
 {
 	model_ = model;
 
@@ -28,7 +28,7 @@ void Tower::Initialize(Model* model, Camera* camera)
 
 }
 
-void Tower::Update()
+void SetTower::Update()
 {
 
 	worldTransform_.UpdateMatrix();
@@ -39,24 +39,24 @@ void Tower::Update()
 
 }
 
-void Tower::Draw()
+void SetTower::Draw()
 {
 	if (existenceFlag == true) {
 		model_->Draw(worldTransform3DReticle_, * camera_, & objColor_);
 	}
 }
 
-void Tower::IsExistence(bool existence)
+void SetTower::IsExistence(bool existence)
 {
 	existenceFlag = existence;
 }
 
-void Tower::IsTower(bool flag)
+void SetTower::IsTower(bool flag)
 {
 	towerFlag = flag;
 }
 
-void Tower::WorldConversion()
+void SetTower::WorldConversion()
 {
 	if (towerFlag == false) {
 		const float kDistancePlayerTo3DReticle = 25.0f;
@@ -145,7 +145,7 @@ void Tower::WorldConversion()
 	towerFlag = true;
 }
 
-bool Tower::IsCollision(const KamataEngine::Vector3 origin, KamataEngine::Vector3 diff,KamataEngine::Vector3 normal, const float distance)
+bool SetTower::IsCollision(const KamataEngine::Vector3 origin, KamataEngine::Vector3 diff,KamataEngine::Vector3 normal, const float distance)
 {
 	// 平面の法線ベクトルと平面までの距離を取得
 	Vector3 normal_ = normal;
@@ -165,7 +165,7 @@ bool Tower::IsCollision(const KamataEngine::Vector3 origin, KamataEngine::Vector
 	return false;
 }
 
-KamataEngine::Vector3 Tower::GetWorldPosition(WorldTransform worldPos_)
+KamataEngine::Vector3 SetTower::GetWorldPosition(WorldTransform worldPos_)
 {
 	Vector3 worldPos;
 	worldPos.x = worldPos_.matWorld_.m[3][0];

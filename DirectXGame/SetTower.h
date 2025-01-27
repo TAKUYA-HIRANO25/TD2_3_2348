@@ -13,11 +13,11 @@
 #include <2d/ImGuiManager.h>
 #include <math.h>
 
-class Tower
+class SetTower
 {
 public:
-	Tower();
-	~Tower();
+	SetTower();
+	~SetTower();
 	/// <summary>
 	/// 初期化
 	/// </summary>
