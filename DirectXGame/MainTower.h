@@ -5,6 +5,8 @@
 #include <3d/Model.h>
 #include <base/TextureManager.h>
 
+using namespace KamataEngine;
+
 class MainTower
 {
 public:
@@ -46,6 +48,12 @@ public:
 	// 攻撃間隔
 	static const int kAttackInterval = 60;
 
+	// 
+	bool IsDead()const { return isDead_; }
+
+	// 
+	Vector3 GetWorldPosition();
+
 private:
 
 	// ワールドトランスフォーム
@@ -69,7 +77,8 @@ private:
 	// 
 	int32_t attackTimer = 0;
 
-	// 
+	// デスフラグ
+	bool isDead_ = false;
 
 };
 

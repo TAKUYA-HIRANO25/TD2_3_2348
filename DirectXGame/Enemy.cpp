@@ -32,6 +32,10 @@ void Enemy::Update() {
 		break;
 	}
 
+#ifdef _DEBUG
+	ImGui::Text("Collision : %d", isDead_);
+	
+#endif
 
 	worldTransform_.UpdateMatrix();
 

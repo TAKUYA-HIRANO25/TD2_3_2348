@@ -12,7 +12,8 @@
 /// </summary>
 /// 
 
-class Player;
+class MainTower;
+
 // GameSceneクラスの前方宣言
 class GameScene;
 
@@ -21,7 +22,6 @@ enum class Phase {
 	Approach, // 接近する
 	Leave,    // 離脱する
 };
-
 
 
 class Enemy {

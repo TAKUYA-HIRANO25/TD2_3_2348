@@ -50,6 +50,9 @@ public: // メンバ関数
 	// 敵発生コマンドの更新
 	void UpdateEnemyPopCommands();
 
+	// 衝突判定と応答
+	void CheckAllCollision();
+
 	const KamataEngine::Vector3 screenCenter = { 0.0f, 0.0f, 0.0f }; // 屏幕中心坐标
 
 private: // メンバ変数
@@ -71,12 +74,7 @@ private: // メンバ変数
 	MainTower* mainTower_ = nullptr;
 	uint32_t mainTowerTextureHandle_ = 0;
 
-
 	uint32_t EnemytextureHandle_ = 0;
-	// 3Dモデル
-	KamataEngine::Model* model_ = nullptr;
-	// ビュープロジェクション
-	KamataEngine::Camera camera_;
 
 	//時間
 	Time* time_ = nullptr;
@@ -108,8 +106,7 @@ private: // メンバ変数
 	KamataEngine::Vector3 Velocity_ = { 0, 0, -0.1f };
 	// 敵の離脱時速度
 	KamataEngine::Vector3 LeaveVelo_ = { -1.0f, 1.0f, 0.0f };
-	// 敵の半径
-	float Enemyradius_ = 1.0f;
+	
 
 	// 敵発生コマンド
 	std::stringstream enemyPopCommands;
