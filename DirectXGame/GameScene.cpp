@@ -3,6 +3,8 @@
 #include "math/Vector3.h"
 #include <fstream>
 #include <iostream>
+#include <string>
+
 using namespace KamataEngine;
 
 GameScene::GameScene() {}
@@ -35,7 +37,8 @@ void GameScene::Initialize() {
 	// ゲームプレイフェーズから開始
 	phase_ = Phase::kPlay;
 	// 3Dモデルの生成
-	model_ = KamataEngine::Model::Create();
+	enemymodel_ = KamataEngine::Model::CreateFromOBJ("cube",true);
+	bossmodel_ = KamataEngine::Model::CreateFromOBJ("boss", true);
 	// ビュープロジェクションの初期化
 	camera_.Initialize();
 	// フェードの作成
@@ -95,7 +98,7 @@ void GameScene::Update() {
 	}
 
 
-}
+}      
 
 void GameScene::Draw() {
 
@@ -195,21 +198,34 @@ void GameScene::ChangePhase()
 
 
 
-void GameScene::EnemyPop(KamataEngine::Vector3 position) {
+void GameScene::EnemyPop(KamataEngine::Vector3 position ,const std::string& type) {
 	
 
 	KamataEngine::Vector3 spawnPosition;
 
-	
+	Enemy* newEnemy = nullptr;
+
+	if (type == "Boss") {
+	newEnemy = new Boss(); // 如果类型是 Boss，则创建 Boss 对象
+	}
+	else {
+	newEnemy = new Enemy(); // 否则创建普通敌人
+	}
 
 	// 敵の生成
-	Enemy* newEnemy = new Enemy();
+	
 	// 敵キャラに自キャラのアドレスを渡す
 	//newEnemy->SetPlayer(player_);
 	// 敵キャラにゲームシーンを渡す
 	newEnemy->SetGameScene(this);
 	// 敵の初期化
-	newEnemy->Initialize(model_, position);
+	if (type == "Boss") {
+		newEnemy->Initialize(bossmodel_, position);// 如果类型是 Boss，则创建 Boss 对象
+	}
+	else {
+		newEnemy->Initialize(enemymodel_, position);// 否则创建普通敌人
+	}
+	
 	enemys_.push_back(newEnemy);
 }
 
@@ -261,8 +277,11 @@ void GameScene::UpdateEnemyPopCommands() {
 			// z座標
 			std::getline(line_stream, word, ',');
 			float z = (float)std::atof(word.c_str());
+
+			std::string type;
+			std::getline(line_stream, type, ',');  // 新增解析类型列
 			// 敵を発生させる
-			EnemyPop(KamataEngine::Vector3(x, y, z));
+			EnemyPop(KamataEngine::Vector3(x, y, z),type);
 		}
 		// WAITコマンド
 		else if (word.find("WAIT") == 0) {
