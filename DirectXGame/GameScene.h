@@ -4,6 +4,9 @@
 #include "Time.h"
 #include "Fade.h"
 #include "Enemy.h"
+#include "Boss.h"
+#include <string>
+
 
 /// <summary>
 /// ゲームシーン
@@ -40,7 +43,7 @@ public: // メンバ関数
 
 	void ChangePhase();
 
-	void EnemyPop(KamataEngine::Vector3 positon);
+	void EnemyPop(KamataEngine::Vector3 positon , const std::string& type);
 
 	/// 敵発生データの読み込み
 	void LoadEnemyPopData();
@@ -59,7 +62,9 @@ private: // メンバ変数
 
 	uint32_t EnemytextureHandle_ = 0;
 	// 3Dモデル
-	KamataEngine::Model* model_ = nullptr;
+	KamataEngine::Model* enemymodel_ = nullptr;
+	KamataEngine::Model* bossmodel_ = nullptr;
+	
 	// ビュープロジェクション
 	KamataEngine::Camera camera_;
 

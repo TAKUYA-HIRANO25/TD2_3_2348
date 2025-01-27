@@ -11,9 +11,9 @@ void Enemy::Initialize(KamataEngine::Model* model, const KamataEngine::Vector3& 
 	// NULLポインタチェック
 	assert(model);
 	model_ = model;
-	textureHandle_ = KamataEngine::TextureManager::Load("Enemy/cube.png");
+	textureHandle_ = KamataEngine::TextureManager::Load("cube/cube.png");
 	worldTransform_.Initialize();
-	worldTransform_.translation_ = position;
+	worldTransform_.translation_ = position;	
 	velocity_ = {0, 0, -0.1f};
 	LeaveVelo_ = {-1.0f, 1.0f, 0.0f};
 	
@@ -86,5 +86,6 @@ KamataEngine::Vector3 Enemy::GetWorldPosition() {
 	worldPos.x = worldTransform_.matWorld_.m[3][0];
 	worldPos.y = worldTransform_.matWorld_.m[3][1];
 	worldPos.z = worldTransform_.matWorld_.m[3][2];
-	return worldPos;
+
+	return worldPos; // 确保返回值
 }

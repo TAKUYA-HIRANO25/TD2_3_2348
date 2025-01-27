@@ -30,11 +30,11 @@ public:
 	Enemy();
 	~Enemy();
 
-	void Initialize(KamataEngine::Model* model, const KamataEngine::Vector3& position);
+	virtual void Initialize(KamataEngine::Model* model, const KamataEngine::Vector3& position);
 
-	void Update();
+	virtual void Update();
 
-	void Draw(KamataEngine::Camera& camera);
+	virtual void Draw(KamataEngine::Camera& camera);
 
 	// 接近フェーズ
 	void Approach();
@@ -48,14 +48,14 @@ public:
 
 	void SetGameScene(GameScene* gameScene) { gameScene_ = gameScene; }
 
-	bool IsDead() const { return isDead_; }
+	virtual bool IsDead() const { return isDead_; }
 
 	// ワールド座標を取得
 	KamataEngine::Vector3 GetWorldPosition();
 
 	
 
-private:
+protected:
 
 	GameScene* gameScene_ = nullptr; // 指向 GameScene 的指针
 
