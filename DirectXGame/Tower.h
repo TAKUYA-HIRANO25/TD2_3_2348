@@ -5,13 +5,15 @@
 #include <input/Input.h>
 #include <math/Vector3.h>
 #include <3d/Camera.h>
-#include "myMath.h"
 #include <base/WinApp.h>
-#include "MathUilityForText.h"
 #include <2d/Sprite.h>
 #include <base/TextureManager.h>
 #include <2d/ImGuiManager.h>
 #include <math.h>
+
+class GameScene;
+
+class SetTower;
 
 class Tower
 {
@@ -33,22 +35,14 @@ public:
 	/// </summary>
 	void Draw();
 
-	void IsExistence(bool existence);
+	void TowerSet();
 
-	void IsTower(bool flag);
+	void SetGameScene(GameScene* gameScene) { gameScene_ = gameScene; }
 
-	void WorldConversion();
-
-	//線と面の当たり判定
-	bool IsCollision(const KamataEngine::Vector3 origin, KamataEngine::Vector3 diff, 
-		KamataEngine::Vector3 normal, const float distance);
-
-	KamataEngine::Vector3 GetWorldPosition(KamataEngine::WorldTransform worldPos);
+	void SetPosition(KamataEngine::Vector3 Transform3DReticle);
 
 private:
 	KamataEngine::WorldTransform worldTransform_;
-	//3Dレティクル用ワールドトランスフォーム
-	KamataEngine::WorldTransform worldTransform3DReticle_;
 
 	KamataEngine::Model* model_ = nullptr;
 
@@ -58,17 +52,8 @@ private:
 
 	KamataEngine::Input* input_ = nullptr;
 
-	bool existenceFlag = false;
+	std::list<SetTower*> towers_;
 
-	bool towerFlag = false;
+	GameScene* gameScene_ = nullptr;
 
-	float rotation = 0.0f;
-
-	float rotationDos = 0.0f;
-
-	float ez = 0.0f;
-
-	KamataEngine::Vector3 normalizeRc;
-
-	KamataEngine::Vector3 nomalizeSe;
 };

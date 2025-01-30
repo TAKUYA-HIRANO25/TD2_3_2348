@@ -4,6 +4,7 @@
 #include "Time.h"
 #include "Fade.h"
 #include "Tower.h"
+#include "SetTower.h"
 
 /// <summary>
 /// ゲームシーン
@@ -40,6 +41,8 @@ public: // メンバ関数
 
 	void ChangePhase();
 
+	void AddTower(Tower* tower);
+
 private: // メンバ変数
 
 	KamataEngine::DirectXCommon* dxCommon_ = nullptr;
@@ -55,7 +58,8 @@ private: // メンバ変数
 	Fade* fade = nullptr;
 
 	//タワー
-	Tower* tower_ = nullptr;
+	std::list<Tower*> towers_;
+	SetTower* SetTower_;
 
 	// 終了フラグ
 	bool finished_ = false;
@@ -71,6 +75,8 @@ private: // メンバ変数
 	};
 	// ゲームの現在のフェーズ
 	Phase phase_;
+
+
 	/// <summary>
 	/// ゲームシーン用
 	/// </summary>

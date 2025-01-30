@@ -21,9 +21,8 @@ void GameScene::Initialize() {
 	//モデル
 	towerModel_ = Model::CreateFromOBJ("cube", true);
 
-	//タワー
-	tower_ = new Tower;
-	tower_->Initialize(towerModel_,camera_);
+	SetTower_ = new SetTower;
+	SetTower_->Initialize(towerModel_,camera_);
 
 	//時間
 	time_ = new Time();
@@ -36,7 +35,6 @@ void GameScene::Initialize() {
 	fade = new Fade();
 	fade->Initialize();
 	fade->Start(Fade::Status::FadeIn, 1.0f);
-
 }
 
 void GameScene::Update() {
@@ -45,13 +43,15 @@ void GameScene::Update() {
 	switch (phase_) {
 	case GameScene::Phase::kPlay:
 		time_->Update();
-		if (input_->IsTriggerMouse(0)) {
-			tower_->IsExistence(true);
-			tower_->IsTower(false);
+
+		SetTower_->Update();
+
+		SetTower_->SetGameScene(this);
+
+		for (Tower* tower : towers_) {
+
+			tower->Update();
 		}
-
-		tower_->Update();
-
 
 	case GameScene::Phase::kMain:
 
@@ -96,9 +96,9 @@ void GameScene::Draw() {
 	/// <summary>
 	/// ここに3Dオブジェクトの描画処理を追加できる
 	/// </summary>
-
-	tower_->Draw();
-
+	for (Tower* tower : towers_) {
+		tower->Draw();
+	}
 	// 3Dオブジェクト描画後処理
 	Model::PostDraw();
 #pragma endregion
@@ -159,5 +159,12 @@ void GameScene::ChangePhase()
 	default:
 		break;
 	}
+}
+
+
+
+void GameScene::AddTower(Tower* tower)
+{
+	towers_.push_back(tower);
 }
 

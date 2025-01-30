@@ -1,4 +1,7 @@
 #include "SetTower.h"
+#include "GameScene.h"
+#include "myMath.h"
+#include "MathUilityForText.h"
 
 using namespace KamataEngine;
 
@@ -19,8 +22,6 @@ void SetTower::Initialize(Model* model, Camera* camera)
 	camera_->Initialize();
 	camera_ = camera;
 
-	objColor_.Initialize();
-
 	input_ = Input::GetInstance();
 
 	worldTransform_.Initialize();
@@ -33,32 +34,20 @@ void SetTower::Update()
 
 	worldTransform_.UpdateMatrix();
 
-	if (existenceFlag == true) {
-		WorldConversion();
-	}
-
+	WorldConversion();
 }
 
 void SetTower::Draw()
 {
-	if (existenceFlag == true) {
-		model_->Draw(worldTransform3DReticle_, * camera_, & objColor_);
-	}
-}
 
-void SetTower::IsExistence(bool existence)
-{
-	existenceFlag = existence;
-}
-
-void SetTower::IsTower(bool flag)
-{
-	towerFlag = flag;
 }
 
 void SetTower::WorldConversion()
 {
-	if (towerFlag == false) {
+	if (input_->IsTriggerMouse(0) && MaxTower < 20) {
+
+		MaxTower++;
+
 		const float kDistancePlayerTo3DReticle = 25.0f;
 		// 自機から3Dレティクルへのオフセット(z+向き)
 		Vector3 offset = { 0, 0, 1.0f };
@@ -106,19 +95,19 @@ void SetTower::WorldConversion()
 		const float kDistanceTestObject = 100.0f;
 		worldTransform3DReticle_.translation_ = posNear + mouseDirection * kDistanceTestObject;
 		worldTransform3DReticle_.UpdateMatrix();
-		float ey = (worldTransform3DReticle_.translation_.y - camera_->translation_.y) * (worldTransform3DReticle_.translation_.y - camera_->translation_.y) 
+		float ey = (worldTransform3DReticle_.translation_.y - camera_->translation_.y) * (worldTransform3DReticle_.translation_.y - camera_->translation_.y)
 			+ (worldTransform3DReticle_.translation_.x - camera_->translation_.x) * (worldTransform3DReticle_.translation_.x - camera_->translation_.x);
 		ey = sqrt(ey);
 		float ex = worldTransform3DReticle_.translation_.z - camera_->translation_.z;
-		rotation = std::atan2(ey,ex);
+		rotation = std::atan2(ey, ex);
 		rotationDos = rotation * 180.0f / 3.14159f;
 		//斜辺を求める
 		ez = -camera_->translation_.z / std::cos(rotation);
 
 
 
-		float es =  (worldTransform3DReticle_.translation_.x - camera_->translation_.x) * (worldTransform3DReticle_.translation_.x - camera_->translation_.x) +
-		(worldTransform3DReticle_.translation_.y - camera_->translation_.y) * (worldTransform3DReticle_.translation_.y - camera_->translation_.y) +
+		float es = (worldTransform3DReticle_.translation_.x - camera_->translation_.x) * (worldTransform3DReticle_.translation_.x - camera_->translation_.x) +
+			(worldTransform3DReticle_.translation_.y - camera_->translation_.y) * (worldTransform3DReticle_.translation_.y - camera_->translation_.y) +
 			(worldTransform3DReticle_.translation_.z - camera_->translation_.z) * (worldTransform3DReticle_.translation_.z - camera_->translation_.z);
 
 		es = sqrt(es);
@@ -130,19 +119,26 @@ void SetTower::WorldConversion()
 		nomalizeSe.z += camera_->translation_.z;
 		worldTransform3DReticle_.translation_ = nomalizeSe;
 		worldTransform3DReticle_.UpdateMatrix();
+		TowerSet();
+
 	}
-
-
-
 	ImGui::Begin("Tower");
 	ImGui::Text("3DReticale:(%+2f,%+2f,%+2f)", worldTransform3DReticle_.translation_.x,
 		worldTransform3DReticle_.translation_.y, worldTransform3DReticle_.translation_.z);
 	ImGui::Text("Camera:(%+2f,%+2f,%+2f", camera_->translation_.x, camera_->translation_.y, camera_->translation_.z);;
 	ImGui::Text("rote:%+2f", rotationDos);
 	ImGui::Text("ez:%+2f", ez);
-	ImGui::Text("nomalizeSe:(%+2f,%+2f,%+2f", nomalizeSe.x,nomalizeSe.y,nomalizeSe.z);
+	ImGui::Text("nomalizeSe:(%+2f,%+2f,%+2f", nomalizeSe.x, nomalizeSe.y, nomalizeSe.z);
 	ImGui::End();
-	towerFlag = true;
+
+}
+
+void SetTower::TowerSet()
+{
+	Tower* newTower = new Tower();
+	newTower->Initialize(model_, camera_);
+	newTower->SetPosition(worldTransform3DReticle_.translation_);
+	gameScene_->AddTower(newTower);
 }
 
 bool SetTower::IsCollision(const KamataEngine::Vector3 origin, KamataEngine::Vector3 diff,KamataEngine::Vector3 normal, const float distance)

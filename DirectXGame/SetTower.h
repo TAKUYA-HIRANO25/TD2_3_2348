@@ -5,13 +5,15 @@
 #include <input/Input.h>
 #include <math/Vector3.h>
 #include <3d/Camera.h>
-#include "myMath.h"
 #include <base/WinApp.h>
-#include "MathUilityForText.h"
 #include <2d/Sprite.h>
 #include <base/TextureManager.h>
 #include <2d/ImGuiManager.h>
 #include <math.h>
+
+class GameScene;
+
+class Tower;
 
 class SetTower
 {
@@ -33,11 +35,11 @@ public:
 	/// </summary>
 	void Draw();
 
-	void IsExistence(bool existence);
-
-	void IsTower(bool flag);
-
 	void WorldConversion();
+
+	void TowerSet();
+
+	void SetGameScene(GameScene* gameScene) { gameScene_ = gameScene; }
 
 	//線と面の当たり判定
 	bool IsCollision(const KamataEngine::Vector3 origin, KamataEngine::Vector3 diff, 
@@ -54,13 +56,9 @@ private:
 
 	KamataEngine::Camera* camera_ = nullptr;
 
-	KamataEngine::ObjectColor objColor_;
-
 	KamataEngine::Input* input_ = nullptr;
 
-	bool existenceFlag = false;
-
-	bool towerFlag = false;
+	int MaxTower = 0;
 
 	float rotation = 0.0f;
 
@@ -68,7 +66,11 @@ private:
 
 	float ez = 0.0f;
 
+	std::list<Tower*> towers_;
+
 	KamataEngine::Vector3 normalizeRc;
 
 	KamataEngine::Vector3 nomalizeSe;
+
+	GameScene* gameScene_ = nullptr;
 };

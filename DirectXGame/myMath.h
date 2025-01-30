@@ -1,6 +1,7 @@
 #include <math/Matrix4x4.h>
 #include <math/Vector3.h>
 #include <cmath>
+
 struct Line {
 	KamataEngine::Vector3 origin;
 	KamataEngine::Vector3 diff;
