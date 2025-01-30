@@ -44,9 +44,7 @@ void SetTower::Draw()
 
 void SetTower::WorldConversion()
 {
-	if (input_->IsTriggerMouse(0) && MaxTower < 20) {
-
-		MaxTower++;
+	if(input_->IsTriggerMouse(0)) {
 
 		const float kDistancePlayerTo3DReticle = 25.0f;
 		// 自機から3Dレティクルへのオフセット(z+向き)
@@ -120,7 +118,9 @@ void SetTower::WorldConversion()
 		worldTransform3DReticle_.translation_ = nomalizeSe;
 		worldTransform3DReticle_.UpdateMatrix();
 		TowerSet();
-
+		if (MaxTower < 20) {
+			MaxTower++;
+		}
 	}
 	ImGui::Begin("Tower");
 	ImGui::Text("3DReticale:(%+2f,%+2f,%+2f)", worldTransform3DReticle_.translation_.x,
@@ -128,6 +128,7 @@ void SetTower::WorldConversion()
 	ImGui::Text("Camera:(%+2f,%+2f,%+2f", camera_->translation_.x, camera_->translation_.y, camera_->translation_.z);;
 	ImGui::Text("rote:%+2f", rotationDos);
 	ImGui::Text("ez:%+2f", ez);
+	ImGui::Text("Tower:%+2f",MaxTower);
 	ImGui::Text("nomalizeSe:(%+2f,%+2f,%+2f", nomalizeSe.x, nomalizeSe.y, nomalizeSe.z);
 	ImGui::End();
 
@@ -135,6 +136,9 @@ void SetTower::WorldConversion()
 
 void SetTower::TowerSet()
 {
+	if (MaxTower > 19) {
+		gameScene_->DeletTower();
+	}
 	Tower* newTower = new Tower();
 	newTower->Initialize(model_, camera_);
 	newTower->SetPosition(worldTransform3DReticle_.translation_);

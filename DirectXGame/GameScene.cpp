@@ -168,3 +168,8 @@ void GameScene::AddTower(Tower* tower)
 	towers_.push_back(tower);
 }
 
+void GameScene::DeletTower()
+{
+	towers_.pop_front();
+}
+

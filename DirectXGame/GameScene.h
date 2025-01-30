@@ -43,6 +43,8 @@ public: // メンバ関数
 
 	void AddTower(Tower* tower);
 
+	void DeletTower();
+
 private: // メンバ変数
 
 	KamataEngine::DirectXCommon* dxCommon_ = nullptr;

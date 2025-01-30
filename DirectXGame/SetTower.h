@@ -58,7 +58,7 @@ private:
 
 	KamataEngine::Input* input_ = nullptr;
 
-	int MaxTower = 0;
+	float MaxTower = 0;
 
 	float rotation = 0.0f;
 
