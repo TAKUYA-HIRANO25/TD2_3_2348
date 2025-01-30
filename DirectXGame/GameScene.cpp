@@ -304,33 +304,37 @@ void GameScene::CheckAllCollision()
 {
 	Vector3 posA, posB;
 
+
 #pragma region メインタワーと敵キャラ
+	
+	for (Enemy* enemy : enemys_) {
 
-	// メインタワーの座標
-	posA = mainTower_->GetWorldPosition();
-	float mainTowerRadius = 1.0f;
+		// メインタワーの座標
+		posA = mainTower_->GetWorldPosition();
+		float mainTowerRadius = 1.0f;
 
-	// 敵キャラの座標
-	posB = enemy_->GetWorldPosition();
-	float Enemyradius = 1.0f;
+		// 敵キャラの座標
+		posB = enemy->GetWorldPosition();
+		float Enemyradius = 1.0f;
 
-	// 座標AとB間の距離を求める
-	float distance =
-		(posB.x - posA.x) * (posB.x - posA.x) +
-		(posB.y - posA.y) * (posB.y - posA.y) +
-		(posB.z - posA.z) * (posB.z - posA.z);
+		// 座標AとB間の距離を求める
+		float distance =
+			(posB.x - posA.x) * (posB.x - posA.x) +
+			(posB.y - posA.y) * (posB.y - posA.y) +
+			(posB.z - posA.z) * (posB.z - posA.z);
 
-	// 衝突距離の平方値を計算
-	float collisionDistance = mainTowerRadius + Enemyradius;
+		// 衝突距離の平方値を計算
+		float collisionDistance = mainTowerRadius + Enemyradius;
 
-	// あたったときの判定
-	if (distance <= collisionDistance * collisionDistance) {
+		// あたったときの判定
+		if (distance <= collisionDistance * collisionDistance) {
 
-		// メインタワーの衝突時のコールバックを呼び出す
-		mainTower_->OnCollision();
+			// メインタワーの衝突時のコールバックを呼び出す
+			mainTower_->OnCollision(10);
 
-		// 敵キャラの衝突時のコールバックを呼び出す
-		enemy_->OnCollision();
+			// 敵キャラの衝突時のコールバックを呼び出す
+			enemy->OnCollision();
+		}
 	}
 
 #pragma endregion

@@ -1,6 +1,9 @@
 #include "mainTower.h"
 #include <cassert>
 
+#include <thread>
+
+
 #include <2d/ImGuiManager.h>
 
 using namespace KamataEngine;
@@ -61,6 +64,8 @@ void MainTower::Update()
 
 #ifdef _DEBUG
 	ImGui::Text("MainTowerHP : %d", hp_);
+	ImGui::Text("OnCollision: %s", isCollided_ ? "Yes" : "No");
+	ResetCollisionFlag();  // 衝突フラグをリセット
 	
 #endif
 
@@ -76,8 +81,10 @@ void MainTower::Attack()
 	// 
 }
 
-void MainTower::OnCollision() 
+void MainTower::OnCollision(int damage) 
 { 
+	isCollided_ = true;
+	hp_ -= damage;
 	if (hp_ <= 0)
 	{
 		isDead_ = true;
@@ -133,12 +140,15 @@ void MainTower::Draw()
 
 Vector3 MainTower::GetWorldPosition()
 {
-	Vector3 worldPos;
-
 	// ワールド行列の平行移動成分を取得（X, Y, Zのワールド座標）
 	worldPos.x = worldTransform_.matWorld_.m[3][0];
 	worldPos.y = worldTransform_.matWorld_.m[3][1];
 	worldPos.z = worldTransform_.matWorld_.m[3][2];
 
 	return worldPos;
+}
+
+void MainTower::ResetCollisionFlag()
+{
+	isCollided_ = false;
 }

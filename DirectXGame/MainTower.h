@@ -24,7 +24,7 @@ public:
 	void Attack();
 
 	// 衝突判定
-	void OnCollision();
+	void OnCollision(int dagame);
 
 	// 攻撃フェーズの初期化
 	void AttackInitialize();
@@ -54,6 +54,8 @@ public:
 	// 
 	Vector3 GetWorldPosition();
 
+	void ResetCollisionFlag();
+
 private:
 
 	// ワールドトランスフォーム
@@ -79,6 +81,10 @@ private:
 
 	// デスフラグ
 	bool isDead_ = false;
+
+	Vector3 worldPos;
+
+	bool isCollided_ = false;
 
 };
 

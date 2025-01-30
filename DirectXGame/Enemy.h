@@ -6,6 +6,8 @@
 #include "math/Vector3.h"
 #include "myMath.h"
 
+#include "Time.h"
+
 #include <list>
 /// <summary>
 /// 敵
@@ -72,8 +74,9 @@ protected:
 	// フェーズ
 	Phase phase_ = Phase::Approach;
 
-
-
+	// ゲーム内時間
+	Time* time_ = nullptr;
+	float GameSpeed = 1.0f;
 	
 	// デスフラグ
 	bool isDead_ = false;
