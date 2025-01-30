@@ -49,6 +49,10 @@ void Enemy::Approach() {
 	KamataEngine::Vector3 direction = myMath::Subtract(gameScene_->screenCenter, worldTransform_.translation_);
 	direction = myMath::Normalize(direction); // 单位化向量
 
+	// 计算朝向角度（假设敌人面向Z轴，我们只调整Y轴旋转）
+	float angleZ = atan2(direction.y, direction.x);
+	worldTransform_.rotation_.z = angleZ;
+
 	// 设置移动速度
 	const float speed = 0.1f;
 	KamataEngine::Vector3 velocity = myMath::Multiply(speed, direction);
