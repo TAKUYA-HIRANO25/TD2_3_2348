@@ -24,7 +24,7 @@ void MainTower::Initialize(KamataEngine::Model* model, uint32_t textureHandle, K
 	worldTransform_.Initialize();
 
 	// タワーのサイズ
-	worldTransform_.scale_ = { 1,1,4 };
+	worldTransform_.scale_ = { 0.5f,0.5f,4 };
 
 	// 攻撃フェーズの初期化
 	AttackInitialize();

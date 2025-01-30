@@ -302,16 +302,15 @@ void GameScene::UpdateEnemyPopCommands() {
 /// </summary>
 void GameScene::CheckAllCollision()
 {
-	Vector3 posA, posB;
+	Vector3 posA, posB, posC;
 
+	// メインタワーの座標
+	posA = mainTower_->GetWorldPosition();
+	float mainTowerRadius = 1.0f;
 
 #pragma region メインタワーと敵キャラ
-	
+		
 	for (Enemy* enemy : enemys_) {
-
-		// メインタワーの座標
-		posA = mainTower_->GetWorldPosition();
-		float mainTowerRadius = 1.0f;
 
 		// 敵キャラの座標
 		posB = enemy->GetWorldPosition();
@@ -336,6 +335,12 @@ void GameScene::CheckAllCollision()
 			enemy->OnCollision();
 		}
 	}
+
+#pragma endregion
+
+#pragma region メインタワーとBoss
+
+	
 
 #pragma endregion
 }
