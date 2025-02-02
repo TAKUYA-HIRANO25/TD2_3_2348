@@ -113,6 +113,8 @@ private: // メンバ変数
 	// 敵の離脱時速度
 	KamataEngine::Vector3 LeaveVelo_ = { -1.0f, 1.0f, 0.0f };
 	
+	// 
+	Boss* boss_ = nullptr;
 
 	// 敵発生コマンド
 	std::stringstream enemyPopCommands;

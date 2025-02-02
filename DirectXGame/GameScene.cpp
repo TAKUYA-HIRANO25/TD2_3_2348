@@ -36,11 +36,14 @@ void GameScene::Initialize() {
 
 	// ゲームプレイフェーズから開始
 	phase_ = Phase::kPlay;
+
 	// 3Dモデルの生成
 	enemymodel_ = KamataEngine::Model::CreateFromOBJ("cube",true);
 	bossmodel_ = KamataEngine::Model::CreateFromOBJ("boss", true);
+	
 	// ビュープロジェクションの初期化
 	camera_.Initialize();
+	
 	// フェードの作成
 	fade = new Fade();
 	fade->Initialize();
@@ -306,7 +309,7 @@ void GameScene::CheckAllCollision()
 
 	// メインタワーの座標
 	posA = mainTower_->GetWorldPosition();
-	float mainTowerRadius = 1.0f;
+	float mainTowerRadius = 2.0f;
 
 #pragma region メインタワーと敵キャラ
 		
@@ -314,7 +317,7 @@ void GameScene::CheckAllCollision()
 
 		// 敵キャラの座標
 		posB = enemy->GetWorldPosition();
-		float Enemyradius = 1.0f;
+		float EnemyRadius = 1.0f;
 
 		// 座標AとB間の距離を求める
 		float distance =
@@ -323,7 +326,7 @@ void GameScene::CheckAllCollision()
 			(posB.z - posA.z) * (posB.z - posA.z);
 
 		// 衝突距離の平方値を計算
-		float collisionDistance = mainTowerRadius + Enemyradius;
+		float collisionDistance = mainTowerRadius + EnemyRadius;
 
 		// あたったときの判定
 		if (distance <= collisionDistance * collisionDistance) {
@@ -343,4 +346,15 @@ void GameScene::CheckAllCollision()
 	
 
 #pragma endregion
+
+	// リストの削除
+	enemys_.remove_if([](Enemy* e) {
+		if (e->IsDead())
+		{
+			delete e;
+			e = nullptr;
+			return true;
+		}
+		return false;
+		});
 }
