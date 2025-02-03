@@ -17,6 +17,10 @@ void TitleScene::Initialize() {
 	fade_->Start(Fade::Status::FadeIn, 1.0f);
 	camera_.Initialize();
 
+	//画像
+	backTexture = TextureManager::Load("field.png");
+	backSprite = Sprite::Create(backTexture, { 0,0 });
+
 }
 
 void TitleScene::Update() {
@@ -57,7 +61,7 @@ void TitleScene::Draw() {
 	/// ここに背景スプライトの処理を追加できる
 	/// </summary>
 	
-
+	backSprite->Draw();
 	// スプライト処理後描画
 	KamataEngine::Sprite::PostDraw();
 	// 深度バッファクリア

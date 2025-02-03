@@ -21,12 +21,17 @@ void GameScene::Initialize() {
 	//モデル
 	towerModel_ = Model::CreateFromOBJ("cube", true);
 
+	backTexture = TextureManager::Load("field.png");
+	backSprite = Sprite::Create(backTexture, { 0,0 });
+
 	SetTower_ = new SetTower;
 	SetTower_->Initialize(towerModel_,camera_);
 
 	//時間
 	time_ = new Time();
 	time_->Initialize();
+
+
 
 	// ゲームプレイフェーズから開始
 	phase_ = Phase::kPlay;
@@ -82,6 +87,8 @@ void GameScene::Draw() {
 	/// <summary>
 	/// ここに背景スプライトの描画処理を追加できる
 	/// </summary>
+	backSprite->Draw();
+
 
 	// スプライト描画後処理
 	Sprite::PostDraw();

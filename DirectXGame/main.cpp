@@ -163,8 +163,7 @@ void UpdateScene() {
 	case Scene::kGame:
 		gameScene->Update();
 		break;
-	}
-}
+	}}
 
 void DrawScene() {
 	switch (scene) {

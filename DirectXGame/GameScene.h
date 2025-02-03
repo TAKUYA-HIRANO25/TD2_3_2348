@@ -53,6 +53,10 @@ private: // メンバ変数
 	KamataEngine::Model* towerModel_ = nullptr;
 	KamataEngine::Camera* camera_ = nullptr;
 
+	//背景画像
+	KamataEngine::Sprite* backSprite = nullptr;
+	uint32_t backTexture;
+
 	//時間
 	Time* time_ = nullptr;
 

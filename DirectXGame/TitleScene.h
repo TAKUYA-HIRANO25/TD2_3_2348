@@ -38,6 +38,10 @@ private:
 	KamataEngine::Audio* audio_ = nullptr;
 	KamataEngine::Camera camera_;
 
+	//背景画像
+	KamataEngine::Sprite* backSprite = nullptr;
+	uint32_t backTexture;
+
 	// 終了フラグ
 	bool finished_ = false;
 
