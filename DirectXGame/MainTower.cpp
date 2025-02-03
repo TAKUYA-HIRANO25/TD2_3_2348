@@ -1,8 +1,6 @@
 #include "mainTower.h"
 #include <cassert>
-
 #include <thread>
-
 
 #include <2d/ImGuiManager.h>
 
@@ -10,6 +8,9 @@ using namespace KamataEngine;
 
 MainTower::~MainTower()
 {
+	for (MainTowerBullet * bullet:bullets_) {
+		delete bullet;
+	}
 }
 
 
@@ -74,11 +75,7 @@ void MainTower::Update()
 
 void MainTower::Attack()
 {
-	// 
-	const float kBulletSpeed = 1.5f;
-	Vector3 velocity(kBulletSpeed, 0, 0);
-
-	// 
+	
 }
 
 void MainTower::OnCollision(int damage) 

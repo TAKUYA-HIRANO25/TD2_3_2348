@@ -5,6 +5,8 @@
 #include <3d/Model.h>
 #include <base/TextureManager.h>
 
+#include "MainTowerBullet.h"
+
 using namespace KamataEngine;
 
 class MainTower
@@ -70,13 +72,17 @@ private:
 	// カメラ
 	KamataEngine::Camera* camera_ = nullptr;
 
-	// 
+	// フェーズ
 	Phase phase_ = Phase::Initial;
 
 	// hp
 	int hp_ = 1000;
 
-	// 
+	// 弾
+	MainTowerBullet* bullet_ = nullptr;
+	std::list<MainTowerBullet*>bullets_;
+
+	// 攻撃タイマー
 	int32_t attackTimer = 0;
 
 	// デスフラグ

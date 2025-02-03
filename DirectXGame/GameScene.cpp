@@ -305,7 +305,7 @@ void GameScene::UpdateEnemyPopCommands() {
 /// </summary>
 void GameScene::CheckAllCollision()
 {
-	Vector3 posA, posB, posC;
+	Vector3 posA, posB;
 
 	// メインタワーの座標
 	posA = mainTower_->GetWorldPosition();
