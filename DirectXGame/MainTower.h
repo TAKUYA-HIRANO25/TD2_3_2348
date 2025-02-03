@@ -9,6 +9,9 @@
 
 using namespace KamataEngine;
 
+// 敵キャラの前方宣言
+class Enemy;
+
 class MainTower
 {
 public:
@@ -53,10 +56,8 @@ public:
 	// 
 	bool IsDead()const { return isDead_; }
 
-	// 
+	// world座標
 	Vector3 GetWorldPosition();
-
-	void ResetCollisionFlag();
 
 private:
 
@@ -92,5 +93,6 @@ private:
 
 	bool isCollided_ = false;
 
+	Enemy* enemy_ = nullptr;
 };
 

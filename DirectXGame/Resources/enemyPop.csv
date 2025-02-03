@@ -1,6 +1,7 @@
 //ƒRƒ}ƒ“ƒh,X,Y,Z,type
 WAIT,120,,,
 POP,50,0,0,Normal
+POP,10,10,0,Boss
 WAIT,120,,,
 POP,0,50,0,Normal
 WAIT,120,,,
@@ -13,7 +14,6 @@ WAIT,120,,,
 POP,0,50,0,Normal
 WAIT,120,,,
 POP,0,-50,0,Normal
-POP,10,10,0,Boss
 WAIT,120,,,
 POP,25,-50,0,Normal
 WAIT,120,,,

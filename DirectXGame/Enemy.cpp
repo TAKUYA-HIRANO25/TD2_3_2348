@@ -76,16 +76,15 @@ void Enemy::Leave() {
 }
 
 
-
-
-
 // 衝突時コールバック
 void Enemy::OnCollision() { isDead_ = true; }
 
 // ワールド座標を取得
 KamataEngine::Vector3 Enemy::GetWorldPosition() {
+	
 	// ワールド座標を入れる変数
-	KamataEngine::Vector3 worldPos;
+	Vector3 worldPos;
+
 	// ワールド行列の平行移動成分を取得
 	worldPos.x = worldTransform_.matWorld_.m[3][0];
 	worldPos.y = worldTransform_.matWorld_.m[3][1];

@@ -80,4 +80,6 @@ protected:
 	
 	// デスフラグ
 	bool isDead_ = false;
+
+	
 };

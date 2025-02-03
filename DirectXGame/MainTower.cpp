@@ -4,6 +4,8 @@
 
 #include <2d/ImGuiManager.h>
 
+#include "Enemy.h"
+
 using namespace KamataEngine;
 
 MainTower::~MainTower()
@@ -40,6 +42,7 @@ void MainTower::Update()
 	//==========
 
 	switch (phase_) {
+	default:
 	case Phase::Attack:
 		
 		AttackUpdate();
@@ -51,9 +54,6 @@ void MainTower::Update()
 		ElminateUpdate();
 
 		break;
-
-	default:
-		break;
 	}
 	
 	//==========
@@ -62,20 +62,53 @@ void MainTower::Update()
 
 	worldTransform_.UpdateMatrix();
 
-
 #ifdef _DEBUG
+
 	ImGui::Text("MainTowerHP : %d", hp_);
-	ImGui::Text("OnCollision: %s", isCollided_ ? "Yes" : "No");
-	ResetCollisionFlag();  // 衝突フラグをリセット
-	
+		
 #endif
-
-
 }
 
 void MainTower::Attack()
 {
-	
+	// 
+	const float kBulletSpeed = 2.0f;
+	Vector3 velocity(kBulletSpeed, kBulletSpeed, 0);
+
+	// メインタワーのワールド座標を取得
+	Vector3 mainTowerPos = worldTransform_.translation_;
+
+	// 
+	Vector3 enemyPos = enemy_->GetWorldPosition();
+
+	// 
+	Vector3 direction = {
+		mainTowerPos.x - enemyPos.x,
+		mainTowerPos.y - enemyPos.y,
+		mainTowerPos.z - enemyPos.z
+	};
+
+	// ベクトルの正規化
+	float length = std::sqrt(direction.x * direction.x + direction.y * direction.y + direction.z * direction.z);
+	if (length != 0) {
+		direction.x /= length;
+		direction.y /= length;
+		direction.z /= length;
+	}
+
+	// ベクトルの長さを速度に合わせる
+	velocity = {
+		direction.x * kBulletSpeed,
+		direction.y * kBulletSpeed,
+		direction.z * kBulletSpeed
+	};
+
+	// 
+	MainTowerBullet* newBullet = new MainTowerBullet();
+	newBullet->Initialize(model_, enemyPos, velocity);
+
+	// 
+	bullets_.push_back(newBullet);
 }
 
 void MainTower::OnCollision(int damage) 
@@ -96,10 +129,6 @@ void MainTower::AttackInitialize()
 
 void MainTower::AttackUpdate()
 {
-	//==========
-	// 攻撃
-	//==========
-
 	// 攻撃タイマーカウントダウン
 	attackTimer--;
 	
@@ -113,11 +142,10 @@ void MainTower::AttackUpdate()
 		attackTimer = kAttackInterval;
 	}
 
-	// HPが0になったらシーン更新
-	if (hp_ <= 0) {
+	// シーン更新
+	if (isDead_) {
 		phase_ = Phase::Eleminate;
 	}
-
 }
 
 void MainTower::ElminateUpdate()
@@ -133,6 +161,11 @@ void MainTower::ElminateUpdate()
 void MainTower::Draw()
 {
 	model_->Draw(worldTransform_, *camera_, textureHandle_);
+
+	// 
+	for (MainTowerBullet* bullet : bullets_) {
+		bullet->Draw(*camera_);
+	}
 }
 
 Vector3 MainTower::GetWorldPosition()
@@ -143,9 +176,4 @@ Vector3 MainTower::GetWorldPosition()
 	worldPos.z = worldTransform_.matWorld_.m[3][2];
 
 	return worldPos;
-}
-
-void MainTower::ResetCollisionFlag()
-{
-	isCollided_ = false;
 }
