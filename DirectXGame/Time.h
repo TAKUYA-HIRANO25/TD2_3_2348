@@ -26,7 +26,7 @@ private: // メンバ変数
 
 	//時間
 	float WorldTime = 0.0f;
-	float GameTime = 0.0f;
+	float GameTime[4];
 	//経過速度
 	float GameSpeed = 0.0f;
 

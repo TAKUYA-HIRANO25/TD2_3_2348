@@ -9,7 +9,11 @@ void Time::Initialize()
 	input_->Initialize();
 
 	WorldTime = 0.0f;
-	GameTime = 0.0f;
+	for (int i = 0; i < 4; i++) {
+		GameTime[i] = 0.0f;
+	}
+	
+
 	GameSpeed = 1.0f;
 }
 
@@ -30,7 +34,8 @@ void Time::Update()
 	}
 
 	WorldTime += 1.0f / 60.0f;
-	GameTime += (1.0f / 60.0f) * GameSpeed;
+	GameTime[0] += (1.0f / 60.0f) * GameSpeed;
+	
 
 #ifdef _DEBUG
 	ImGui::Text("WorldTime %f", WorldTime);
