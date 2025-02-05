@@ -35,7 +35,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 	// ゲームウィンドウの作成
 	win = WinApp::GetInstance();
-	win->CreateGameWindow(L"2348_ゲーム");
+	win->CreateGameWindow(L"昼夜の防衛線");
 
 	// DirectX初期化処理
 	dxCommon = DirectXCommon::GetInstance();
