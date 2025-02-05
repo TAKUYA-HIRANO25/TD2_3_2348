@@ -4,6 +4,13 @@
 #include <2d/Sprite.h>
 #include <base/TextureManager.h>
 
+//時間帯
+enum class Day {
+	noon,
+	night,
+	boss,
+};
+
 class Time {
 public: // メンバ関数
 	/// <summary>
@@ -21,6 +28,13 @@ public: // メンバ関数
 	/// </summary>
 	void Draw();
 
+	void Wave();
+
+	int IsWave() const { return wave; }
+
+	Day IsDay() const { return day_; }
+
+	bool IsBoss() const { return bossFlag; }
 
 private: // メンバ変数
 	KamataEngine::Input* input_ = nullptr;
@@ -35,13 +49,17 @@ private: // メンバ変数
 	uint32_t NomaleTexture;
 	uint32_t UpTexture;
 	uint32_t DownTexture;
-
+	//ウェーブ スプライト
+	uint32_t waveTexture;
+	KamataEngine::Sprite* waveSprite;
+	KamataEngine::Sprite* waveCountSprite;
 	//時間
 	float WorldTime = 1;
 	int GameTime[4];
 	float timeCount = 0.0f;
 	//経過速度
 	float GameSpeed = 0.0f;
+	
 
 	enum class Phase {
 		Nomale,
@@ -52,4 +70,12 @@ private: // メンバ変数
 	// ゲームの現在のフェーズ
 	Phase phase_;
 
+	Day day_;
+
+	//ウェーブ
+	int wave;
+
+	bool bossFlag = false;
+
+	void TimeSpeed();
 };

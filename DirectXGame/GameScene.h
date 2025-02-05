@@ -56,7 +56,8 @@ private: // メンバ変数
 	//背景画像
 	KamataEngine::Sprite* backSprite = nullptr;
 	uint32_t backTexture;
-
+	KamataEngine::Sprite* backSprite2 = nullptr;
+	uint32_t backTexture2;
 	//時間
 	Time* time_ = nullptr;
 
@@ -82,7 +83,11 @@ private: // メンバ変数
 	// ゲームの現在のフェーズ
 	Phase phase_;
 
+	int wave_;
 
+	Day day_;
+
+	bool bossFlag = false;
 	/// <summary>
 	/// ゲームシーン用
 	/// </summary>

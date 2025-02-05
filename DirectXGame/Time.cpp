@@ -10,13 +10,16 @@ void Time::Initialize()
 
 	WorldTime = 1.0f;
 	for (int i = 0; i < 4; i++) {
-		GameTime[i] = 05 ;
+		GameTime[i] = 0;
 	}
 	
 	timeCount = 0.0f;
 	GameSpeed = 1.0f;
 
 	phase_ = Phase::Nomale;
+	
+	bossFlag = false;
+	wave = 1;
 
 	//スプライト
 	numberTexture[0] = TextureManager::Load("number/0.png");
@@ -33,8 +36,13 @@ void Time::Initialize()
 	NomaleTexture = TextureManager::Load("number/NomaleSpeed.png");
 	UpTexture = TextureManager::Load("number/SppedUp.png");
 	DownTexture = TextureManager::Load("number/SpeedDown.png");
+	waveTexture = TextureManager::Load("Wave.png");
 
+	waveSprite = Sprite::Create(waveTexture, { 1100.0f,32.0f });
+	waveCountSprite = Sprite::Create(numberTexture[wave], { 1068.0f,32.0f });
 	dotSprite = Sprite::Create(dotTexture, { 640.0f,76.0f });
+
+	day_ = Day::noon;
 }
 
 void Time::Update()
@@ -52,6 +60,60 @@ void Time::Update()
 			GameSpeed = 1.5f;
 		}
 	}
+	
+	TimeSpeed();
+	Wave();
+
+#ifdef _DEBUG
+	ImGui::Text("WorldTime %f", WorldTime);
+	ImGui::Text("GameSpeed %f", GameSpeed);
+	
+	ImGui::Text("wave %d", wave);
+#endif
+}
+
+void Time::Draw()
+{
+
+	dotSprite->Draw();
+	speedSprite->Draw();
+	waveCountSprite->Draw();
+	waveSprite->Draw();
+	for (int i = 0; i < 2; i++) {
+		secoundSorite[i]->Draw();
+		minuteSprite[i]->Draw();
+	}
+
+}
+
+void Time::Wave()
+{
+	if (WorldTime >= 85.0f && bossFlag == false) {
+		WorldTime = 0.0f;
+		if (day_ == Day::noon) {
+			day_ = Day::night;
+		
+		}
+		else if (day_ == Day::night) {
+			day_ = Day::noon;
+			
+		}
+		if (wave >= 5) {
+			bossFlag = true;
+		}
+		else {
+			wave++;
+			waveCountSprite = Sprite::Create(numberTexture[wave], { 1068.0f,32.0f });
+		}
+
+	}
+	if (bossFlag == true) {
+		day_ = Day::boss;
+	}
+}
+
+void Time::TimeSpeed()
+{
 	if (GameSpeed == 1.5f) {
 		phase_ = Phase::Up;
 		speedSprite = Sprite::Create(UpTexture, { 615.0f,32.0f });
@@ -85,7 +147,7 @@ void Time::Update()
 		GameTime[3] += 1;
 		GameTime[2] = 0;
 	}
-	for (int i = 0; i < 9; i++) {
+	for (int i = 0; i < 10; i++) {
 		if (GameTime[0] == i) {
 			secoundSorite[1] = Sprite::Create(numberTexture[i], { 672.0f,76.0f });
 		}
@@ -99,22 +161,4 @@ void Time::Update()
 			minuteSprite[0] = Sprite::Create(numberTexture[i], { 608.0f,76.0f });
 		}
 	}
-
-#ifdef _DEBUG
-	ImGui::Text("WorldTime %f", WorldTime);
-	ImGui::Text("GameTime %f", GameTime);
-	ImGui::Text("GameSpeed %f", GameSpeed);
-#endif
-}
-
-void Time::Draw()
-{
-
-	dotSprite->Draw();
-	speedSprite->Draw();
-	for (int i = 0; i < 2; i++) {
-		secoundSorite[i]->Draw();
-		minuteSprite[i]->Draw();
-	}
-
 }

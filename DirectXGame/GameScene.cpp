@@ -23,15 +23,20 @@ void GameScene::Initialize() {
 
 	backTexture = TextureManager::Load("field.png");
 	backSprite = Sprite::Create(backTexture, { 0,0 });
+	backTexture2 = TextureManager::Load("field2.png");
+	backSprite2 = Sprite::Create(backTexture2, { 0,0 });
 
 	SetTower_ = new SetTower;
 	SetTower_->Initialize(towerModel_,camera_);
 
+	//ウェーブ
+	wave_ = 1;
+	bossFlag = false;
+	day_ = Day::noon;
+
 	//時間
 	time_ = new Time();
 	time_->Initialize();
-
-
 
 	// ゲームプレイフェーズから開始
 	phase_ = Phase::kPlay;
@@ -48,6 +53,8 @@ void GameScene::Update() {
 	switch (phase_) {
 	case GameScene::Phase::kPlay:
 		time_->Update();
+		day_ = time_->IsDay();
+		wave_ = time_->IsWave();
 
 		SetTower_->Update();
 
@@ -87,9 +94,15 @@ void GameScene::Draw() {
 	/// <summary>
 	/// ここに背景スプライトの描画処理を追加できる
 	/// </summary>
-	backSprite->Draw();
-
-
+	if (day_ == Day::noon) {
+		backSprite->Draw();
+	}
+	if (day_ == Day::night) {
+		backSprite2->Draw();
+	}
+	if (day_ == Day::boss) {
+		backSprite2->Draw();
+	}
 	// スプライト描画後処理
 	Sprite::PostDraw();
 	// 深度バッファクリア
