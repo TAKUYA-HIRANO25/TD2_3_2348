@@ -41,10 +41,6 @@ public:
 
 	void SetGameScene(GameScene* gameScene) { gameScene_ = gameScene; }
 
-	//線と面の当たり判定
-	bool IsCollision(const KamataEngine::Vector3 origin, KamataEngine::Vector3 diff, 
-		KamataEngine::Vector3 normal, const float distance);
-
 	KamataEngine::Vector3 GetWorldPosition(KamataEngine::WorldTransform worldPos);
 
 private:

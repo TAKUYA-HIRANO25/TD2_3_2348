@@ -35,11 +35,13 @@ public:
 	/// </summary>
 	void Draw();
 
-	void TowerSet();
-
 	void SetGameScene(GameScene* gameScene) { gameScene_ = gameScene; }
 
 	void SetPosition(KamataEngine::Vector3 Transform3DReticle);
+
+	//線と面の当たり判定
+	bool IsCollision(const KamataEngine::Vector3 origin, KamataEngine::Vector3 diff,
+		KamataEngine::Vector3 normal, const float distance);
 
 private:
 	KamataEngine::WorldTransform worldTransform_;
