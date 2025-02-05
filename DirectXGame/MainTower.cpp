@@ -71,44 +71,7 @@ void MainTower::Update()
 
 void MainTower::Attack()
 {
-	// 
-	const float kBulletSpeed = 2.0f;
-	Vector3 velocity(kBulletSpeed, kBulletSpeed, 0);
-
-	// メインタワーのワールド座標を取得
-	Vector3 mainTowerPos = worldTransform_.translation_;
-
-	// 
-	Vector3 enemyPos = enemy_->GetWorldPosition();
-
-	// 
-	Vector3 direction = {
-		mainTowerPos.x - enemyPos.x,
-		mainTowerPos.y - enemyPos.y,
-		mainTowerPos.z - enemyPos.z
-	};
-
-	// ベクトルの正規化
-	float length = std::sqrt(direction.x * direction.x + direction.y * direction.y + direction.z * direction.z);
-	if (length != 0) {
-		direction.x /= length;
-		direction.y /= length;
-		direction.z /= length;
-	}
-
-	// ベクトルの長さを速度に合わせる
-	velocity = {
-		direction.x * kBulletSpeed,
-		direction.y * kBulletSpeed,
-		direction.z * kBulletSpeed
-	};
-
-	// 
-	MainTowerBullet* newBullet = new MainTowerBullet();
-	newBullet->Initialize(model_, enemyPos, velocity);
-
-	// 
-	bullets_.push_back(newBullet);
+	
 }
 
 void MainTower::OnCollision(int damage) 
