@@ -17,6 +17,16 @@ void TitleScene::Initialize() {
 	fade_->Start(Fade::Status::FadeIn, 1.0f);
 	camera_.Initialize();
 
+	//画像
+	backTexture = TextureManager::Load("field.png");
+	backSprite = Sprite::Create(backTexture, { 0,0 });
+
+	//BGM
+	audio_ = Audio::GetInstance();
+	TitleSound_ = audio_->LoadWave("BGM/TaitleBGM.mp3");
+	TitleHandle_ = audio_->PlayWave(TitleSound_, true);
+	DecisionSound_ = audio_->LoadWave("BGM/Decision.mp3");
+
 }
 
 void TitleScene::Update() {
@@ -26,7 +36,7 @@ void TitleScene::Update() {
 			phase_ = Phase::kFadeOut;
 			fade_->Start(Fade::Status::FadeOut, 1.0f);
 			phase_ = Phase::kMain;
-			
+			DecisionHandle_ = audio_->PlayWave(DecisionSound_, false);
 		}
 		fade_->Update();
 		break;
@@ -37,6 +47,7 @@ void TitleScene::Update() {
 		}
 		break;
 	case TitleScene::Phase::kFadeOut:
+		audio_->StopWave(TitleHandle_);
 		finished_ = true;
 		break;
 	default:
@@ -57,7 +68,7 @@ void TitleScene::Draw() {
 	/// ここに背景スプライトの処理を追加できる
 	/// </summary>
 	
-
+	backSprite->Draw();
 	// スプライト処理後描画
 	KamataEngine::Sprite::PostDraw();
 	// 深度バッファクリア

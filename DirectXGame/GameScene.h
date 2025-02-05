@@ -8,6 +8,8 @@
 #include <string>
 
 #include "MainTower.h"
+#include "Tower.h"
+#include "SetTower.h"
 
 /// <summary>
 /// ゲームシーン
@@ -57,6 +59,10 @@ public: // メンバ関数
 
 	const KamataEngine::Vector3 screenCenter = { 0.0f, 0.0f, 0.0f }; // 屏幕中心坐标
 
+	void AddTower(Tower* tower);
+
+	void DeletTower();
+
 private: // メンバ変数
 
 	KamataEngine::DirectXCommon* dxCommon_ = nullptr;
@@ -82,11 +88,22 @@ private: // メンバ変数
 
 	uint32_t EnemytextureHandle_ = 0;
 
+	KamataEngine::Model* towerModel_ = nullptr;
+
+	//背景画像
+	KamataEngine::Sprite* backSprite = nullptr;
+	uint32_t backTexture;
+	KamataEngine::Sprite* backSprite2 = nullptr;
+	uint32_t backTexture2;
 	//時間
 	Time* time_ = nullptr;
 
 	//フェード
 	Fade* fade = nullptr;
+
+	//タワー
+	std::list<Tower*> towers_;
+	SetTower* SetTower_;
 
 	// 終了フラグ
 	bool finished_ = false;
@@ -122,6 +139,21 @@ private: // メンバ変数
 	bool waitFlag = false;
 	// 待機タイマー
 	int32_t waitTimer = 0;
+
+	int wave_;
+
+	Day day_;
+
+	bool bossFlag = false;
+
+	//BGM
+	uint32_t GameSound_ = 0;
+	uint32_t GameHandle_ = 0;
+	bool BGMFlag = false;
+	int BGmStartTime;
+	// 決定音
+	uint32_t DecisionSound_ = 0;
+	uint32_t DecisionHandle_ = 0;
 	/// <summary>
 	/// ゲームシーン用
 	/// </summary>

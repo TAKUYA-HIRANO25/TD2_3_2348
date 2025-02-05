@@ -38,6 +38,10 @@ private:
 	KamataEngine::Audio* audio_ = nullptr;
 	KamataEngine::Camera camera_;
 
+	//背景画像
+	KamataEngine::Sprite* backSprite = nullptr;
+	uint32_t backTexture;
+
 	// 終了フラグ
 	bool finished_ = false;
 
@@ -47,4 +51,10 @@ private:
 	// 現在のフェーズ
 	Phase phase_ = Phase::kFadeIn;
 
+	//BGM
+	uint32_t TitleSound_ = 0;
+	uint32_t TitleHandle_ = 0;
+	//決定音
+	uint32_t DecisionSound_ = 0;
+	uint32_t DecisionHandle_ = 0;
 };

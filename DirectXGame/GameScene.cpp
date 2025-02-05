@@ -31,6 +31,23 @@ void GameScene::Initialize() {
 	// カメラの初期化
 	camera_.Initialize();
 
+	//モデル
+	towerModel_ = Model::CreateFromOBJ("cube", true);
+
+	backTexture = TextureManager::Load("field.png");
+	backSprite = Sprite::Create(backTexture, { 0,0 });
+	backTexture2 = TextureManager::Load("field2.png");
+	backSprite2 = Sprite::Create(backTexture2, { 0,0 });
+
+	SetTower_ = new SetTower;
+	SetTower_->Initialize(towerModel_,&camera_);
+
+	//ウェーブ
+	wave_ = 1;
+	bossFlag = false;
+	day_ = Day::noon;
+
+	//時間
 	time_ = new Time();
 	time_->Initialize();
 
@@ -41,13 +58,14 @@ void GameScene::Initialize() {
 	enemymodel_ = KamataEngine::Model::CreateFromOBJ("cube",true);
 	bossmodel_ = KamataEngine::Model::CreateFromOBJ("boss", true);
 	
-	// ビュープロジェクションの初期化
-	camera_.Initialize();
 	
 	// フェードの作成
 	fade = new Fade();
 	fade->Initialize();
 	fade->Start(Fade::Status::FadeIn, 1.0f);
+	GameSound_ = audio_->LoadWave("BGM/Game.mp3");
+	DecisionSound_ = audio_->LoadWave("BGM/Decision.mp3");
+	BGmStartTime = 0;
 
 	LoadEnemyPopData();
 
@@ -59,6 +77,7 @@ void GameScene::Initialize() {
 
 	// 
 	enemy_ = new Enemy();
+
 }
 
 void GameScene::Update() {
@@ -68,6 +87,15 @@ void GameScene::Update() {
 	case GameScene::Phase::kPlay:
 		UpdateEnemyPopCommands();
 		
+		BGmStartTime++;
+		if (BGmStartTime == 120) {
+			BGMFlag = true;
+		}
+		if (BGMFlag == true) {
+			GameHandle_ = audio_->PlayWave(GameSound_, true, 0.8f);
+			BGMFlag = false;
+		}
+
 		time_->Update();
 		// 敵の更新
 		for (Enemy* enemy : enemys_) {
@@ -79,6 +107,18 @@ void GameScene::Update() {
 		CheckAllCollision();
 		
 		break;
+
+		day_ = time_->IsDay();
+		wave_ = time_->IsWave();
+
+		SetTower_->Update();
+
+		SetTower_->SetGameScene(this);
+
+		for (Tower* tower : towers_) {
+
+			tower->Update();
+		}
 
 	case GameScene::Phase::kMain:
 		
@@ -115,7 +155,15 @@ void GameScene::Draw() {
 	/// <summary>
 	/// ここに背景スプライトの描画処理を追加できる
 	/// </summary>
-
+	if (day_ == Day::noon) {
+		backSprite->Draw();
+	}
+	if (day_ == Day::night) {
+		backSprite2->Draw();
+	}
+	if (day_ == Day::boss) {
+		backSprite2->Draw();
+	}
 	// スプライト描画後処理
 	Sprite::PostDraw();
 	// 深度バッファクリア
@@ -137,6 +185,9 @@ void GameScene::Draw() {
 
 	mainTower_->Draw();
 
+	for (Tower* tower : towers_) {
+		tower->Draw();
+	}
 	// 3Dオブジェクト描画後処理
 	Model::PostDraw();
 #pragma endregion
@@ -148,6 +199,8 @@ void GameScene::Draw() {
 	/// <summary>
 	/// ここに前景スプライトの描画処理を追加できる
 	/// </summary>
+
+	time_->Draw();
 
 	// スプライト描画後処理
 	Sprite::PostDraw();
@@ -179,17 +232,20 @@ void GameScene::ChangePhase()
 		break;
 
 	case GameScene::Phase::kFadeOut:
+		audio_->StopWave(GameHandle_);
 		finished_ = true;
 
 		break;
 	case GameScene::Phase::kDeath:
 		if (input_->TriggerKey(DIK_SPACE)) {
+			DecisionHandle_ = audio_->PlayWave(DecisionSound_, false, 0.8f);
 			phase_ = Phase::kFadeIn;
 		}
 		break;
 
 	case GameScene::Phase::kClear:
 		if (input_->TriggerKey(DIK_SPACE)) {
+			DecisionHandle_ = audio_->PlayWave(DecisionSound_, false, 0.8f);
 			phase_ = Phase::kFadeIn;
 		}
 
@@ -338,15 +394,7 @@ void GameScene::CheckAllCollision()
 			enemy->OnCollision();
 		}
 	}
-
-#pragma endregion
-
-#pragma region メインタワーとBoss
-
 	
-
-#pragma endregion
-
 	// リストの削除
 	enemys_.remove_if([](Enemy* e) {
 		if (e->IsDead())
@@ -358,3 +406,17 @@ void GameScene::CheckAllCollision()
 		return false;
 		});
 }
+
+#pragma endregion
+
+void GameScene::AddTower(Tower* tower)
+{
+	towers_.push_back(tower);
+}
+
+void GameScene::DeletTower()
+{
+	towers_.pop_front();
+}
+
+

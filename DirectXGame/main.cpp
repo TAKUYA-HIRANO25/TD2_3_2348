@@ -73,12 +73,12 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 #pragma endregion
 	// ゲームシーンの初期化
 	gameScene = new GameScene();
-	//gameScene->Initialize();
+	gameScene->Initialize();
 	
 	// 最初のシーン
-	scene = Scene::kTitle;
+	scene = Scene::kGame;
 	titleScene = new TitleScene();
-	titleScene->Initialize();
+	//titleScene->Initialize();
 
 	// メインループ
 	while (true) {
@@ -163,8 +163,7 @@ void UpdateScene() {
 	case Scene::kGame:
 		gameScene->Update();
 		break;
-	}
-}
+	}}
 
 void DrawScene() {
 	switch (scene) {
