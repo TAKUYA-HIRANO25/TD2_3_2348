@@ -72,7 +72,7 @@ void GameScene::Initialize() {
 
 	// メインタワー
 	mainTower_ = new MainTower();
-	mainTowerTextureHandle_ = TextureManager::Load("mainTower.jpg");
+	mainTowerTextureHandle_ = TextureManager::Load("white1x1.png");
 	mainTower_->Initialize(model_, mainTowerTextureHandle_, &camera_);
 
 	// 
