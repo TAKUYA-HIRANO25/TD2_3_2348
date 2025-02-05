@@ -41,6 +41,9 @@ private:
 	//背景画像
 	KamataEngine::Sprite* backSprite = nullptr;
 	uint32_t backTexture;
+	//タイトル
+	KamataEngine::Sprite* titleSprite = nullptr;
+	uint32_t titleTexture;
 
 	// 終了フラグ
 	bool finished_ = false;

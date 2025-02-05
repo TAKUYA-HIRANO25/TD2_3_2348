@@ -62,7 +62,7 @@ void GameScene::Update() {
 			BGMFlag = true;
 		}
 		if (BGMFlag == true) {
-			GameHandle_ = audio_->PlayWave(GameSound_, true, 0.8f);
+			GameHandle_ = audio_->PlayWave(GameSound_, true, 0.5f);
 			BGMFlag = false;
 		}
 
