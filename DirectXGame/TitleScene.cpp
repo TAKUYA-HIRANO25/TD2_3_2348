@@ -22,6 +22,8 @@ void TitleScene::Initialize() {
 	backSprite = Sprite::Create(backTexture, { 0,0 });
 	titleTexture = TextureManager::Load("Title.png");
 	titleSprite = Sprite::Create(titleTexture, { 0,0 });
+	explanationTexture = TextureManager::Load("explanation.png");
+	explanationSprite = Sprite::Create(explanationTexture, { 0,0 });
 	//BGM
 	audio_ = Audio::GetInstance();
 	TitleSound_ = audio_->LoadWave("BGM/TaitleBGM.mp3");
@@ -33,11 +35,14 @@ void TitleScene::Initialize() {
 void TitleScene::Update() {
 	switch (phase_) {
 	case TitleScene::Phase::kFadeIn:
-		if (input_->TriggerKey(DIK_SPACE)) {
+		if (input_->TriggerKey(DIK_SPACE) && phase_ == Phase::kFadeIn) {
 			phase_ = Phase::kFadeOut;
 			fade_->Start(Fade::Status::FadeOut, 1.0f);
 			phase_ = Phase::kMain;
 			DecisionHandle_ = audio_->PlayWave(DecisionSound_, false);
+		}
+		if (input_->TriggerKey(DIK_TAB) && phase_ == Phase::kFadeIn) {
+			phase_ = Phase::kExplanation;
 		}
 		fade_->Update();
 		break;
@@ -50,6 +55,12 @@ void TitleScene::Update() {
 	case TitleScene::Phase::kFadeOut:
 		audio_->StopWave(TitleHandle_);
 		finished_ = true;
+		break;
+
+	case TitleScene::Phase::kExplanation:
+		if (input_->TriggerKey(DIK_TAB)) {
+			phase_ = Phase::kFadeIn;
+		}
 		break;
 	default:
 		break;
@@ -70,7 +81,12 @@ void TitleScene::Draw() {
 	/// </summary>
 	
 	backSprite->Draw();
-	titleSprite->Draw();
+	if (phase_ == Phase::kFadeIn) {
+		titleSprite->Draw();
+	}
+	if (phase_ == Phase::kExplanation) {
+		explanationSprite->Draw();
+	}
 	// スプライト処理後描画
 	KamataEngine::Sprite::PostDraw();
 	// 深度バッファクリア

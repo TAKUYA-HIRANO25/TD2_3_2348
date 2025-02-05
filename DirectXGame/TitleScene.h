@@ -17,6 +17,7 @@ public:
 		kFadeIn,  // フェードイン
 		kMain,    // メイン部
 		kFadeOut, // フェードアウト
+		kExplanation, //説明
 	};
 
 	TitleScene();
@@ -44,6 +45,9 @@ private:
 	//タイトル
 	KamataEngine::Sprite* titleSprite = nullptr;
 	uint32_t titleTexture;
+	//説明
+	KamataEngine::Sprite* explanationSprite = nullptr;
+	uint32_t explanationTexture;
 
 	// 終了フラグ
 	bool finished_ = false;
@@ -60,4 +64,5 @@ private:
 	//決定音
 	uint32_t DecisionSound_ = 0;
 	uint32_t DecisionHandle_ = 0;
+
 };
