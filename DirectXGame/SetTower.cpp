@@ -122,15 +122,18 @@ void SetTower::WorldConversion()
 			MaxTower++;
 		}
 	}
+
+#ifdef _DEBUG
 	ImGui::Begin("Tower");
 	ImGui::Text("3DReticale:(%+2f,%+2f,%+2f)", worldTransform3DReticle_.translation_.x,
 		worldTransform3DReticle_.translation_.y, worldTransform3DReticle_.translation_.z);
 	ImGui::Text("Camera:(%+2f,%+2f,%+2f", camera_->translation_.x, camera_->translation_.y, camera_->translation_.z);;
 	ImGui::Text("rote:%+2f", rotationDos);
 	ImGui::Text("ez:%+2f", ez);
-	ImGui::Text("Tower:%+2f",MaxTower);
+	ImGui::Text("Tower:%+2f", MaxTower);
 	ImGui::Text("nomalizeSe:(%+2f,%+2f,%+2f", nomalizeSe.x, nomalizeSe.y, nomalizeSe.z);
 	ImGui::End();
+#endif // _DEBUG	
 
 }
 

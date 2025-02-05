@@ -28,39 +28,58 @@ void MainTower::Initialize(KamataEngine::Model* model, uint32_t textureHandle, K
 
 	// タワーのサイズ
 	worldTransform_.scale_ = { 2,2,4 };
-
-	// 攻撃フェーズの初期化
-	AttackInitialize();
 		
 }
 
 
 void MainTower::Update()
 {
-	//==========
-	// 行動制御
-	//==========
+	// シングルトンインスタンスを取得する
+	input_ = Input::GetInstance();
 
-	switch (phase_) {
-	default:
-	case Phase::Attack:
-		
-		AttackUpdate();
-		
-		break;
+	// プレイヤーの移動ベクトル
+	Vector3 move = { 0,0,0 };
 
-	case Phase::Eleminate:
+	//===============
+	// キーボード入力による移動処理
+	//===============
 
-		ElminateUpdate();
+	// 回転の速さ[ラジアン/frame]
+	const float kRotSpeed = 0.03f;
 
-		break;
+	// 押した方向で移動ベクトルを変更（左右）
+	if (input_->PushKey(DIK_A)) {
+		worldTransform_.rotation_.z += kRotSpeed;
+	}
+	else if (input_->PushKey(DIK_D)) {
+		worldTransform_.rotation_.z -= kRotSpeed;
+	}
+
+	if (isDead_) {
+		worldTransform_.translation_.z += 1;
 	}
 	
-	//==========
-	// 行列更新
-	//==========
+	Attack();
+
+	// 弾更新
+	{
+		for (MainTowerBullet* bullet : bullets_) {
+			bullet->Update();
+		}
+
+		bullets_.remove_if([](MainTowerBullet* bullet) {
+
+			if (bullet->IsDead()) {
+				delete bullet;
+				return true;
+			}
+
+			return false;
+			});
+	}
 
 	worldTransform_.UpdateMatrix();
+	worldTransform_.TransferMatrix();
 
 #ifdef _DEBUG
 
@@ -71,7 +90,25 @@ void MainTower::Update()
 
 void MainTower::Attack()
 {
-	
+	if (input_->TriggerKey(DIK_SPACE)) {
+
+		// 自キャラの座標コピー
+		KamataEngine::Vector3 position = worldPos;
+
+		// 弾の速度
+		const float kBulletSpeed = 1.0f;
+		KamataEngine::Vector3 velocity(kBulletSpeed, 0, 0);
+
+		// 速度ベクトルを自機の向きに合わせて回転させる
+		velocity = myMath::TransformNormal(velocity, worldTransform_.matWorld_);
+
+		// 弾を生成し、初期化
+		MainTowerBullet* newBullet = new MainTowerBullet();
+		newBullet->Initialize(model_, position, velocity);
+
+		// 弾を登録する
+		bullets_.push_back(newBullet);
+	}
 }
 
 void MainTower::OnCollision(int damage) 
@@ -82,43 +119,6 @@ void MainTower::OnCollision(int damage)
 	{
 		isDead_ = true;
 	}
-}
-
-void MainTower::AttackInitialize()
-{
-	// 攻撃タイマーを初期化
-	attackTimer = kAttackInterval;
-}
-
-void MainTower::AttackUpdate()
-{
-	// 攻撃タイマーカウントダウン
-	attackTimer--;
-	
-	// 時間に達したら
-	if (attackTimer <= 0) {
-
-		// 攻撃
-		Attack();
-
-		// 攻撃タイマーを初期化
-		attackTimer = kAttackInterval;
-	}
-
-	// シーン更新
-	if (isDead_) {
-		phase_ = Phase::Eleminate;
-	}
-}
-
-void MainTower::ElminateUpdate()
-{
-	Vector3 move = { 0,0,0.7f };
-
-	// 各方向に離脱する移動
-	worldTransform_.translation_.x += move.x;
-	worldTransform_.translation_.y += move.y;
-	worldTransform_.translation_.z += move.z;
 }
 
 void MainTower::Draw()

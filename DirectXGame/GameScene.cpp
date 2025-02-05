@@ -72,7 +72,7 @@ void GameScene::Initialize() {
 
 	// メインタワー
 	mainTower_ = new MainTower();
-	mainTowerTextureHandle_ = TextureManager::Load("white1x1.png");
+	mainTowerTextureHandle_ = TextureManager::Load("blue.png");
 	mainTower_->Initialize(model_, mainTowerTextureHandle_, &camera_);
 
 	// 
@@ -212,9 +212,12 @@ void GameScene::ChangePhase()
 {
 	switch (phase_) {
 	case GameScene::Phase::kPlay:
-		if (input_->TriggerKey(DIK_SPACE)) {
-			phase_ = Phase::kClear;
+		if (mainTower_->IsDead()) {
+			phase_ = Phase::kDeath;
 		}
+
+		
+
 		break;
 
 	case GameScene::Phase::kFadeIn:
@@ -365,6 +368,9 @@ void GameScene::CheckAllCollision()
 	posA = mainTower_->GetWorldPosition();
 	float mainTowerRadius = 2.0f;
 
+	// maintowerの攻撃のリスト
+	const std::list<MainTowerBullet*>& mainTowerBullets = mainTower_->GetBullets();
+
 #pragma region メインタワーと敵キャラ
 		
 	for (Enemy* enemy : enemys_) {
@@ -392,7 +398,47 @@ void GameScene::CheckAllCollision()
 			enemy->OnCollision();
 		}
 	}
-	
+
+#pragma endregion
+
+#pragma region 攻撃と敵
+
+	for (Enemy* enemy : enemys_) {
+
+		// 敵キャラの座標
+		posB = enemy->GetWorldPosition();
+		float EnemyRadius = 1.0f;
+
+		for (MainTowerBullet* bullet : mainTowerBullets) {
+
+
+			posA = bullet->GetWorldPosition();
+			float bulletRadius = 1.0f;
+
+			float distance =
+				(posB.x - posA.x) * (posB.x - posA.x) +
+				(posB.y - posA.y) * (posB.y - posA.y) +
+				(posB.z - posA.z) * (posB.z - posA.z);
+
+			// 衝突距離の平方値を計算
+			float collisionDistance = bulletRadius + EnemyRadius;
+
+			// あたったときの判定
+			if (distance <= collisionDistance * collisionDistance) {
+
+				// メインタワーの攻撃の衝突時のコールバックを呼び出す
+				bullet->OnCollosion();
+
+				// 敵キャラの衝突時のコールバックを呼び出す
+				enemy->OnCollision();
+			}
+		}
+
+	}
+
+#pragma endregion
+
+
 	// リストの削除
 	enemys_.remove_if([](Enemy* e) {
 		if (e->IsDead())
@@ -403,9 +449,6 @@ void GameScene::CheckAllCollision()
 		}
 		return false;
 		});
-
-#pragma endregion
-
 
 }
 
