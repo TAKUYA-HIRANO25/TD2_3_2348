@@ -88,6 +88,15 @@ private: // メンバ変数
 	Day day_;
 
 	bool bossFlag = false;
+
+	//BGM
+	uint32_t GameSound_ = 0;
+	uint32_t GameHandle_ = 0;
+	bool BGMFlag = false;
+	int BGmStartTime;
+	// 決定音
+	uint32_t DecisionSound_ = 0;
+	uint32_t DecisionHandle_ = 0;
 	/// <summary>
 	/// ゲームシーン用
 	/// </summary>

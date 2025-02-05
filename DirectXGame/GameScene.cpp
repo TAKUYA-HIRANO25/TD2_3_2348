@@ -45,6 +45,11 @@ void GameScene::Initialize() {
 	fade = new Fade();
 	fade->Initialize();
 	fade->Start(Fade::Status::FadeIn, 1.0f);
+	GameSound_ = audio_->LoadWave("BGM/Game.mp3");
+	DecisionSound_ = audio_->LoadWave("BGM/Decision.mp3");
+	BGmStartTime = 0;
+
+
 }
 
 void GameScene::Update() {
@@ -52,6 +57,15 @@ void GameScene::Update() {
 
 	switch (phase_) {
 	case GameScene::Phase::kPlay:
+		BGmStartTime++;
+		if (BGmStartTime == 120) {
+			BGMFlag = true;
+		}
+		if (BGMFlag == true) {
+			GameHandle_ = audio_->PlayWave(GameSound_, true, 0.8f);
+			BGMFlag = false;
+		}
+
 		time_->Update();
 		day_ = time_->IsDay();
 		wave_ = time_->IsWave();
@@ -163,17 +177,20 @@ void GameScene::ChangePhase()
 		break;
 
 	case GameScene::Phase::kFadeOut:
+		audio_->StopWave(GameHandle_);
 		finished_ = true;
 
 		break;
 	case GameScene::Phase::kDeath:
 		if (input_->TriggerKey(DIK_SPACE)) {
+			DecisionHandle_ = audio_->PlayWave(DecisionSound_, false, 0.8f);
 			phase_ = Phase::kFadeIn;
 		}
 		break;
 
 	case GameScene::Phase::kClear:
 		if (input_->TriggerKey(DIK_SPACE)) {
+			DecisionHandle_ = audio_->PlayWave(DecisionSound_, false, 0.8f);
 			phase_ = Phase::kFadeIn;
 		}
 
