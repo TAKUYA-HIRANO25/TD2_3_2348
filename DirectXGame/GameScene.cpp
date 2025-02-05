@@ -260,8 +260,6 @@ void GameScene::ChangePhase()
 void GameScene::EnemyPop(KamataEngine::Vector3 position ,const std::string& type) {
 	
 
-	KamataEngine::Vector3 spawnPosition;
-
 	Enemy* newEnemy = nullptr;
 
 	if (type == "Boss") {
@@ -405,9 +403,13 @@ void GameScene::CheckAllCollision()
 		}
 		return false;
 		});
-}
 
 #pragma endregion
+
+
+}
+
+
 
 void GameScene::AddTower(Tower* tower)
 {
