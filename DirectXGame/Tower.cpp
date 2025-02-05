@@ -2,6 +2,7 @@
 #include "GameScene.h"
 #include "myMath.h"
 #include "MathUilityForText.h"
+#include "Enemy.h"
 
 using namespace KamataEngine;
 
@@ -22,14 +23,20 @@ void Tower::Initialize(Model* model, Camera* camera)
 
 	objColor_.Initialize();
 
+
+
 	input_ = Input::GetInstance();
 
 	worldTransform_.Initialize();
+
+	// 攻撃フェーズの初期化
+	AttackInitialize();
 
 }
 
 void Tower::Update()
 {
+	AttackUpdate();
 
 	worldTransform_.UpdateMatrix();
 }
@@ -44,23 +51,54 @@ void Tower::SetPosition(KamataEngine::Vector3 Transform3DReticle)
 	worldTransform_.translation_ = Transform3DReticle;
 }
 
-bool Tower::IsCollision(const KamataEngine::Vector3 origin, KamataEngine::Vector3 diff, KamataEngine::Vector3 normal, const float distance)
+void Tower::Attack()
 {
-	// 平面の法線ベクトルと平面までの距離を取得
-	Vector3 normal_ = normal;
-	float distance_ = distance;
+	// 弾の速度
+	const float kBulletSpeed = 1.5f;
+	Vector3 velocity(kBulletSpeed, 0, 0);
 
-	// 線分の始点と終点の位置を計算
-	float startDistance = normal_.x * origin.x + normal_.y * origin.y + normal_.z * origin.z - distance_;
-	float endDistance = normal_.x * (origin.x + diff.x) + normal_.y * (origin.y + diff.y) + normal_.z * (origin.z + diff.z) - distance_;
+	// 自キャラのワールド座標を取得
+	Vector3 mainTowerPos = worldTransform_.translation_;
 
-	// 線分が平面の両側にあるかどうかを判定
-	if ((startDistance * endDistance) <= 0.0f) {
-		// 両側にある場合は交差が発生するため、衝突と判定
-		return true;
+	// 敵キャラのワールド座標を取得
+	Vector3 enemyPos = enemy_->GetWorldPosition();
+
+	// ベクトルの差分を求める
+	Vector3 direction = {
+		  enemyPos.x - mainTowerPos.x,
+		  enemyPos.y - mainTowerPos.y,
+		  enemyPos.z - mainTowerPos.z
+	};
+
+	// ベクトルの正規化
+	float length = std::sqrt(direction.x * direction.x + direction.y * direction.y * direction.z * direction.z);
+	if (length != 0) {
+		direction.x /= length;
+		direction.y /= length;
+		direction.z /= length;
 	}
 
-	// 両側にない場合は衝突しない
-	return false;
+	// ベクトルの長さを速度に合わせる
+	velocity = {
+		direction.x * kBulletSpeed,
+		direction.y * kBulletSpeed,
+		direction.z * kBulletSpeed
+	};
+
+	// 弾を生成し、初期化
+	MainTowerBullet* newBullet = new MainTowerBullet();
+	newBullet->Initialize(model_, mainTowerPos, velocity);
+
+	bullets_.push_back(newBullet);
+}
+
+void Tower::AttackInitialize()
+{
+
+}
+
+void Tower::AttackUpdate()
+{
+
 }
 

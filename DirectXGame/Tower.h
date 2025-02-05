@@ -10,10 +10,14 @@
 #include <base/TextureManager.h>
 #include <2d/ImGuiManager.h>
 #include <math.h>
+#include "TowerBullet.h"
+
 
 class GameScene;
 
 class SetTower;
+
+class Enemy;
 
 class Tower
 {
@@ -39,9 +43,13 @@ public:
 
 	void SetPosition(KamataEngine::Vector3 Transform3DReticle);
 
-	//線と面の当たり判定
-	bool IsCollision(const KamataEngine::Vector3 origin, KamataEngine::Vector3 diff,
-		KamataEngine::Vector3 normal, const float distance);
+	// 攻撃
+	void Attack();
+	// 攻撃フェーズの初期化
+	void AttackInitialize();
+
+	// 各フェーズの更新処理
+	void AttackUpdate();
 
 private:
 	KamataEngine::WorldTransform worldTransform_;
@@ -58,4 +66,17 @@ private:
 
 	GameScene* gameScene_ = nullptr;
 
+	// 攻撃間隔
+	static const int kAttackInterval = 30;
+
+	// 弾リストを取得
+	const std::list<TowerBullet*>& Getbullets()const { return bullets_; }
+
+	// 弾
+	TowerBullet* bullet_ = nullptr;
+	std::list<TowerBullet*>bullets_;
+
+	// enemy
+	Enemy* enemy_ = nullptr;
+	std::list<Enemy*>enemys_;
 };
