@@ -10,7 +10,7 @@
 #include <cmath>
 #include <2d/ImGuiManager.h>
 
-#include "Time.h"
+#include <input/Input.h>
 
 #ifndef M_PI
 #define M_PI 3.14159265358979323846
@@ -49,7 +49,4 @@ private:
     // デスフラグ
     bool isDead_ = false;
 
-    // 
-    Time* time_ = nullptr;
-    float GameSpeed = 1.0f;
 };

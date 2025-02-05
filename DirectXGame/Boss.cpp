@@ -52,7 +52,8 @@ bool Boss::IsDead() const {
 
 void Boss::CircleAround() {
     const float radius = 18.0f; // 绕场的半径
-    const float speed = 0.01f; // 绕场的速度
+    float speed = 0.01f; // 绕场的速度
+  
 
     // 更新角度
     angle_ += speed;

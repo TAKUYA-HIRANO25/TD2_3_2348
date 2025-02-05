@@ -58,7 +58,18 @@ void Enemy::Approach() {
 	worldTransform_.rotation_.z = angleZ;
 
 	// 设置移动速度
-	const float speed = 0.1f;
+	float speed = 0.1f;
+
+	input_ = Input::GetInstance();
+
+	if (input_->PushKey(DIK_A)) {
+		speed = 0.05f;
+	}
+
+	if (input_->PushKey(DIK_D)) {
+		speed = 0.15f;
+	}
+
 	KamataEngine::Vector3 velocity = myMath::Multiply(speed, direction);
 
 	// 更新位置
