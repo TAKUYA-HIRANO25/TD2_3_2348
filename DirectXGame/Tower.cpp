@@ -23,8 +23,6 @@ void Tower::Initialize(Model* model, Camera* camera)
 
 	objColor_.Initialize();
 
-
-
 	input_ = Input::GetInstance();
 
 	worldTransform_.Initialize();
@@ -86,7 +84,7 @@ void Tower::Attack()
 	};
 
 	// 弾を生成し、初期化
-	MainTowerBullet* newBullet = new MainTowerBullet();
+	TowerBullet* newBullet = new TowerBullet();
 	newBullet->Initialize(model_, mainTowerPos, velocity);
 
 	bullets_.push_back(newBullet);
@@ -94,11 +92,27 @@ void Tower::Attack()
 
 void Tower::AttackInitialize()
 {
-
+	// 攻撃タイマーを初期化
+	attackTimer = kAttackInterval;
 }
 
 void Tower::AttackUpdate()
 {
+
+	/// 攻撃 ///
+
+	// 攻撃タイマーカウントダウン
+	attackTimer--;
+
+	// 時間に達したら
+	if (attackTimer <= 0) {
+
+		// 攻撃
+		Attack();
+
+		// 攻撃タイマーを初期化
+		attackTimer = kAttackInterval;
+	}
 
 }
 

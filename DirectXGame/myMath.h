@@ -1,3 +1,4 @@
+#pragma once
 #include <math/Matrix4x4.h>
 #include <math/Vector3.h>
 #include <cmath>
@@ -35,6 +36,7 @@ float Length(const KamataEngine::Vector3& v);
 class myMath {
 public:
 	static KamataEngine::Matrix4x4 Multiply(const KamataEngine::Matrix4x4& m1, const KamataEngine::Matrix4x4& m2);
+	static KamataEngine::Vector3 Multiply(float scalar, const KamataEngine::Vector3& vector);
 	static KamataEngine::Matrix4x4 MakeTranslateMatrix(const KamataEngine::Vector3& translate);
 	static KamataEngine::Matrix4x4 MakeScaleMatrix(const KamataEngine::Vector3& scale);
 	static KamataEngine::Matrix4x4 MakeRotateXMatrix(float radius);
@@ -47,5 +49,12 @@ public:
 	static KamataEngine::Matrix4x4 Inverse(const KamataEngine::Matrix4x4& m);
 	static KamataEngine::Vector3 Transform(const KamataEngine::Vector3& vector, const KamataEngine::Matrix4x4& matrix);
 	static KamataEngine::Vector3 TransformNormal(const KamataEngine::Vector3& vector, const KamataEngine::Matrix4x4& matrix);
+	static KamataEngine::Vector3 Normalize(const KamataEngine::Vector3& v); 
+	// 加算
+	static KamataEngine::Vector3 Add(const KamataEngine::Vector3& v1, const KamataEngine::Vector3& v2);
+	//减算
+	static KamataEngine::Vector3 Subtract(const KamataEngine::Vector3& v1, const KamataEngine::Vector3& v2);
+
+	static float Length(const KamataEngine::Vector3& v);
 	static KamataEngine::Vector3 Normalize(const KamataEngine::Vector3& v);
 };

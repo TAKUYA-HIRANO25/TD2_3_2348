@@ -76,6 +76,9 @@ private:
 	TowerBullet* bullet_ = nullptr;
 	std::list<TowerBullet*>bullets_;
 
+	// 攻撃タイマー
+	int32_t attackTimer = 0;
+
 	// enemy
 	Enemy* enemy_ = nullptr;
 	std::list<Enemy*>enemys_;
